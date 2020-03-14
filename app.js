@@ -1,10 +1,17 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const logControllerexport = require('./controllers/logControllers/logController.js')
+
+const logController = new logControllerexport.logController();
 
 const app = express();
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
+app.use(express.json());
+
+app.use(express.urlencoded())
+
 
 
 //memoriába egetett blog komponensek
@@ -34,11 +41,21 @@ let blogPosts = [
 
 
 
-
-
+let admin = {
+    username: "admin",
+    password: "password"
+}
 
 app.get('/', function (req, res) {
     res.render('home', {blogs: blogPosts, blogTitle: blogTitles});
 });
+
+app.get('/login', logController.loginGet)
+
+app.post('/login', logController.loginPost)
+
+app.get('/admin', function(req, res){
+    res.render('admin_site')
+})
 
 app.listen(3000);
