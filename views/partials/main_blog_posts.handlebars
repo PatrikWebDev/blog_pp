@@ -1,0 +1,25 @@
+<div>
+    <h1 style="text-align: center;">
+        {{blogTitle}}
+    </h1>
+    {{#each blogs}}
+<article style="border: solid aquamarine  1px;">
+    <header style="border: solid aquamarine  1px;">
+      
+        <div style="float:left;display: inline-block; "> {{this.author}} </div>
+        <div style="float:right;display: inline-block;"> {{this.date}} </div>
+      
+    </header>
+    <ul class="list-group">
+  <li class="list-group-item">
+      
+    <h2 style="border: solid aquamarine  1px; text-align:center"> {{this.title}} </h2>
+    <p style="border: solid #7fffd4  1px;">
+        {{this.content}}
+    </p>
+      </li>
+  
+</ul>
+</article>
+{{/each}}
+</div>
