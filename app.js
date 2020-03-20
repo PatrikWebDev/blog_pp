@@ -1,14 +1,17 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const logControllerexport = require('./controllers/logControllers/logController.js')
-
+const cookieParser = require('cookie-parser');
 const logController = new logControllerexport.logController();
+const sessionControl = require ('./controllers/sessionController/sessionController.js')
+const cookieChecker =new sessionControl.sessionController()
 
 const app = express();
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(express.urlencoded())
 
@@ -54,8 +57,17 @@ app.get('/login', logController.loginGet)
 
 app.post('/login', logController.loginPost)
 
-app.get('/admin', function(req, res){
+app.get('/admin', cookieChecker.cookieChecker ,function(req, res){
+    
     res.render('admin_site')
+})
+
+app.post('/logout', cookieChecker.cookieDeleter, function(req, res){
+    res.redirect('/logOut')
+})
+
+app.get('/logOut',  function(req,res){
+    res.render('login')
 })
 
 app.listen(3000);

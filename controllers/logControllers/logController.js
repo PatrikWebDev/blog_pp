@@ -1,7 +1,11 @@
+const sessionControl = require ('../sessionController/sessionController.js')
+const cookieChecker = new sessionControl.sessionController()
 let admin = {
     username: "admin",
     password: "password"
 }
+
+const sessions = {}
 
 
 class logController{
@@ -21,11 +25,16 @@ class logController{
     loginPost (req, res){
         let {username, userpassword} = req.body
         if(username = admin.username && userpassword == admin.password){
+            res.cookie('sessionId', 'admin')
             res.redirect('/admin')
         }else{
             res.redirect('/login?fail=true')
         }
     
+    }
+
+    logoutPost(req, res){
+        
     }
 }
 
