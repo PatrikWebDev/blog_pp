@@ -11,7 +11,6 @@ class sessionController {
     constructor() { }
 
     cookieChecker(req, res, next) {
-        console.log(req.cookies)
         const authCookie = req.cookies;
         const session = sessions.cookie={authCookie};
         if (!(sessions.cookie.authCookie.sessionId)) {
