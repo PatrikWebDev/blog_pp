@@ -8,7 +8,7 @@ function publishNewPost(req, res){
     if(req.body.title == false && req.body.content == false){
         res.render('new_post_view', {fail: failmessage})
     }
-
+    console.log(req.body.content)
     let currentdate = new Date(); 
     let datetime = "Posted : " + currentdate.getDate() + "/"
                     + (currentdate.getMonth()+1)  + "/" 

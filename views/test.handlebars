@@ -1,15 +1,16 @@
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
-
 <h1>New Post View</h1>
-<form method="POST" action="/newPost" id="blogsubmit">
+<form method="POST" action="/newPost">
 <label>Title</label>
 <input type="text" name="title" required>
 <label>content</label>
-<input id="blogcontent" type="hidden" name="content" value="">
 <div id="editor">
+
+<p>Editor's place</p>
+
 </div>
-<br>
+
+
+
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Discard</button>
 <button type="submit" name="newBlogPost" value="Publish">Publish</button>
 
@@ -36,21 +37,3 @@
   </div>
 </div>
 
-
-
-
-
-
-
-<script>
-  var quill = new Quill('#editor', {
-    theme: 'snow'
-  });
-</script>
-<script>
-let contentValue = document.getElementById("editor").innerHTML
-document.getElementById("blogsubmit").onsubmit(
-document.getElementById("blogcontent").setAttribute("value", `${contentValue}`)
-
-)
-</script>
