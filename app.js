@@ -4,25 +4,23 @@ const logControllerexport = require('./controllers/logControllers/logController.
 const newPost= require('./controllers/postControllers/new_post_controller')
 const cookieParser = require('cookie-parser');
 const logController = new logControllerexport.logController();
+const postViewCont = require('./controllers/viewControllers/postViewControllers.js')
+const viewCont = new postViewCont.viewCont();
 const sessionControl = require ('./controllers/sessionController/sessionController.js')
 const cookieChecker =new sessionControl.sessionController()
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('BlogPosts.db')
 const app = express();
+const cors = require('cors')
+
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'))
-app.use(express.urlencoded())
-
-
-
-//memoriába egetett blog komponensek
-let blogTitles = [
-    "Elso blog oldalam"
-]
+app.use(express.urlencoded({extended: true}))
+app.use(cors())
 
 
 
@@ -31,18 +29,11 @@ let admin = {
     password: "password"
 }
 
-app.get('/', function (req, res) {
+app.get('/', viewCont.postsListView);
 
-    db.serialize(function () {
-        db.all("SELECT title, content, author, date FROM posts", function (err, results) {
-            if (err != null) {
-                res.send("Missing from database")
-            }
-            res.render('home', {blogs: results, blogTitle: blogTitles});
-        });
-    });
+app.post('/postView', viewCont.singleViewRedirect);
 
-});
+app.get('/postView/:id', viewCont.postsSingleView);
 
 app.get('/login', logController.loginGet)
 
