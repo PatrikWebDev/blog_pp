@@ -24,19 +24,21 @@ class postViewController {
             });
         });
     }
-    
+
     singleViewRedirect(req, res){
-        let {id} = req.body
-    res.redirect(`/postView/${id}`)
+        let {title} = req.body
+        let slug = title.replace(/\s/g, "-")
+    res.redirect(`/postView/${slug}`)
     }
 
     postsSingleView(req, res) {
         db.serialize(function () {
-            let allID = new Promise(function (resolve, reject) {
-                db.all("SELECT id FROM posts", function (err, results) {
-                    supportId = results
-                    let id = supportId.filter(element => element.id == req.params.id)
-                    db.all(`SELECT title, content, author, date FROM posts WHERE id= "${id[0].id}"`, function (err, results) {
+            let allSlug = new Promise(function (resolve, reject) {
+                db.all("SELECT title FROM posts", function (err, results) {
+                   console.log(results)
+                    let supportSlug = results
+                    let searchedSlug = supportSlug.filter(element => element.title.replace(/\s/g, "-") == req.params.title)
+                    db.all(`SELECT title, content, author, date FROM posts WHERE title= "${searchedSlug[0].title}"`, function (err, results) {
                         if (err != null) {
                             res.send("Missing from database")
                         }

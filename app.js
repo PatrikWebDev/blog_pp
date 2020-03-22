@@ -33,7 +33,7 @@ app.get('/', viewCont.postsListView);
 
 app.post('/postView', viewCont.singleViewRedirect);
 
-app.get('/postView/:id', viewCont.postsSingleView);
+app.get('/postView/:title', viewCont.postsSingleView);
 
 app.get('/login', logController.loginGet)
 
