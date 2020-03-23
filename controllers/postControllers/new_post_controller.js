@@ -3,10 +3,22 @@ const uuidv4 = uuid.v4
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('BlogPosts.db')
 
-class newPostCont {
-    constructor() {
+// Létrehozza a dátumot amit több helyen lehet használni
+function creatingDate() {
 
-    }
+    let currentdate = new Date();
+    let datetime = "Posted : " + currentdate.getDate() + "/"
+        + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getFullYear() + " @ "
+        + currentdate.getHours() + ":"
+        + currentdate.getMinutes() + ":"
+        + currentdate.getSeconds();
+
+    return datetime
+}
+
+class newPostCont {
+    constructor() { }
 
     publishNewPost(req, res) {
         const failmessage = "Mindkét mező kitöltése kötelező"
@@ -14,13 +26,6 @@ class newPostCont {
             res.render('new_post_view', { fail: failmessage })
         }
 
-        let currentdate = new Date();
-        let datetime = "Posted : " + currentdate.getDate() + "/"
-            + (currentdate.getMonth() + 1) + "/"
-            + currentdate.getFullYear() + " @ "
-            + currentdate.getHours() + ":"
-            + currentdate.getMinutes() + ":"
-            + currentdate.getSeconds();
         let { sessionId } = req.cookies
 
         let blogPost = {
@@ -28,7 +33,7 @@ class newPostCont {
             title: req.body.title,
             content: req.body.content,
             author: sessionId,
-            created_at: datetime
+            created_at: creatingDate()
         }
 
         console.log(blogPost, "post")
@@ -41,23 +46,13 @@ class newPostCont {
         res.redirect('/admin')
     }
 
-    saveDraft(req, res){
-
-        let currentdate = new Date();
-        let datetime = "Posted : " + currentdate.getDate() + "/"
-            + (currentdate.getMonth() + 1) + "/"
-            + currentdate.getFullYear() + " @ "
-            + currentdate.getHours() + ":"
-            + currentdate.getMinutes() + ":"
-            + currentdate.getSeconds();
-        let { sessionId } = req.cookies
-
+    saveDraft(req, res) {
         let blogPost = {
             id: `${uuidv4()}`,
             title: req.body.title,
             content: req.body.content,
             author: sessionId,
-            created_at: datetime
+            created_at: creatingDate()
         }
 
         console.log(blogPost, "draft")

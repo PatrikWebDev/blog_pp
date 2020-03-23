@@ -3,17 +3,21 @@
 
 <h1>New Post View</h1>
 <form name="newPost" method="POST">
+<div class="form-group">
 <label>Title</label>
-<input type="text" name="title" id="title" required="true" onblur="document.draft.input.value = this.value;" value="{{posts.title}}">
-<label>content</label>
+<input class="form-control" type="text" name="title" id="title" required="true" onblur="document.draft.input.value = this.value;" value="{{posts.title}}">
+</div>
+<div class="form-group">
+<label>Content</label>
 <input id="blogcontent" type="hidden" name="content" value="">
-<div id="editor" class="ql-editor">
+<div id="editor" class="ql-editor  form-control">
   {{{posts.content}}}
 </div>
+</div>
 <br>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Discard</button>
-<button  type="submit" name="newBlogPost" value="Publish" formaction="/newPost" >Publish</button>
-<button type="submit" formaction="/saveDraft" >Save as Draft</button>
+<button type="button" class="alert alert-primary" data-toggle="modal" data-target="#exampleModal">Discard</button>
+<button class="alert alert-primary"  type="submit" name="newBlogPost" value="Publish" formaction="/newPost" >Publish</button>
+<button class="alert alert-primary" type="submit" formaction="/saveDraft" >Save as Draft</button>
 </form>
 {{fail}}
 

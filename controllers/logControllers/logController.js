@@ -1,12 +1,8 @@
-const sessionControl = require ('../sessionController/sessionController.js')
-const cookieChecker = new sessionControl.sessionController()
+// Beégetett admin felhasználó
 let admin = {
     username: "admin",
     password: "password"
 }
-
-const sessions = {}
-
 
 class logController{
     constructor(){
@@ -33,8 +29,12 @@ class logController{
     
     }
 
+    logoutGet(req, res){
+        res.render('login')
+    }
+
     logoutPost(req, res){
-        
+        res.redirect('/logOut')
     }
 }
 

@@ -1,16 +1,18 @@
 <div>
-<h1>{{post.title}}</h1>
-<div class="row justify-content-between">
+  {{#each post}}
+  <p>{{this.title}}</p>
+  <div class="row justify-content-between">
     <div class="col-4">
-     {{post.author}}
+      {{this.author}}
     </div>
     <div class="col-4">
-    {{post.date}}
+      {{this.date}}
     </div>
   </div>
-<div class="row  ql-editor">
-<p>
-    {{{post.content}}}
-</p>
-</div>
+  <div class="row  ql-editor">
+    <p>
+      {{{this.content}}}
+    </p>
+  </div>
+  {{/each}}
 </div>

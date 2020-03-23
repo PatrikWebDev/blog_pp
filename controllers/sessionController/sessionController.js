@@ -1,15 +1,10 @@
-
-let admin = {
-    username: "admin",
-    password: "password"
-}
-
+// Session declration
 let sessions = {}
 
 
 class sessionController {
     constructor() { }
-
+    // Leellenőrzi van-e érvényes sessionja a felhasználónak
     cookieChecker(req, res, next) {
         const authCookie = req.cookies;
         const session = sessions.cookie={authCookie};
@@ -20,13 +15,12 @@ class sessionController {
         req.session = session;
         next()
     }
-
+    // törli a sessiont
     cookieDeleter(req,res, next){
         let {logout} = req.body;
         if (logout == 'logout'){
             res.clearCookie("sessionId")
             delete sessions.cookie
-            console.log(sessions)
             res.redirect('/login')
             return
         }
