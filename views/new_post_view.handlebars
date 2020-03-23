@@ -39,18 +39,23 @@
 
 
 
-
-
-
 <script>
-  var quill = new Quill('#editor', {
-    theme: 'snow'
-  });
-</script>
-<script>
-let contentValue = document.getElementById("editor").innerHTML
-document.getElementById("blogsubmit").onsubmit(
-document.getElementById("blogcontent").setAttribute("value", `${contentValue}`)
+ var quill = new Quill('#editor', {
+                modules: {
+                        toolbar: [
+                                ['bold', 'italic'],
+                                ['link', 'blockquote', 'code-block', 'image'],
+                                [{ list: 'ordered' }, { list: 'bullet' }]
+                        ]
+                },
+                placeholder: 'Compose an epic...',
+                theme: 'snow'
+        });
+        var form = document.querySelector('form');
+        form.onsubmit = function () {
+                // Populate hidden form on submit
+                var submitcontent = document.querySelector('input[name=content]');
+                submitcontent.value = quill.root.innerHTML;
+        };
 
-)
 </script>
