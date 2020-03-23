@@ -53,6 +53,10 @@ app.get('/newPostView',cookieChecker.cookieChecker,function(req, res){
     res.render('new_post_view')
 })
 
+app.get('/adminPostList', cookieChecker.cookieChecker, viewCont.adminPostList)
+
+app.post('/editPost', cookieChecker.cookieChecker, viewCont.adminEdit)
+
 app.post('/newPost',cookieChecker.cookieChecker, newPost.publishNewPost)
 
 app.post('/saveDraft', cookieChecker.cookieChecker, newPost.saveDraft)

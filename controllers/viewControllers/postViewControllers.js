@@ -50,6 +50,24 @@ class postViewController {
             })
         })
     }
+
+    adminPostList(req, res){
+        db.serialize(function(){
+            db.all("SELECT title, author, date, content FROM posts", function (err , results){
+                if (err != null) {
+                    res.send("Missing from database")
+                }
+                res.render('admin_post_list', {posts: results})
+            })
+        })
+
+    }
+
+    adminEdit(req, res){
+        console.log(req.body)
+        res.render('new_post_view', {posts: req.body})
+    }
+
 }
 
 

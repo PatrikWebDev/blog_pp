@@ -1,0 +1,28 @@
+<button> <a href="/newPostView" target="_blank">New Post</a></button>
+<table>
+    <thead>
+        <tr>
+                <th class="text-center">Title</th>
+                <th class="text-center">Author</th>
+                <th class="text-center">Date</th>
+                <th class="text-center" >Operations</th>
+            </tr>
+    </thead>
+    <tbody>
+        {{#each posts}}
+        <tr>
+            <td> {{this.title}}</td>
+            <td> {{this.author}}</td>
+            <td> {{this.date}}</td>
+            <form method="Post" action="/editPost">
+            <input type="hidden" name="title" value="{{this.title}}">
+            <input type="hidden" name="content" value="{{this.content}}">
+            <input type="hidden" name="date" value="{{this.date}}">
+            <input type="hidden" name="author" value="{{this.author}}">
+            <td><button type="submit">Edit</button></td>
+            </form>
+        </tr>
+        {{/each}}
+    </tbody>
+
+</table>

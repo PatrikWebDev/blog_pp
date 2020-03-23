@@ -4,10 +4,11 @@
 <h1>New Post View</h1>
 <form name="newPost" method="POST">
 <label>Title</label>
-<input type="text" name="title" id="title" required="true" onblur="document.draft.input.value = this.value;">
+<input type="text" name="title" id="title" required="true" onblur="document.draft.input.value = this.value;" value="{{posts.title}}">
 <label>content</label>
 <input id="blogcontent" type="hidden" name="content" value="">
-<div id="editor">
+<div id="editor" class="ql-editor">
+  {{{posts.content}}}
 </div>
 <br>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Discard</button>
@@ -49,7 +50,7 @@
                                 [{ list: 'ordered' }, { list: 'bullet' }]
                         ]
                 },
-                placeholder: 'Compose an epic...',
+                placeholder: 'Something',
                 theme: 'snow'
         });
         var form = document.querySelector('form');
