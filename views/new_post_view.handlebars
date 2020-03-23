@@ -1,9 +1,15 @@
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+
 <h1>New Post View</h1>
 <form name="newPost" method="POST">
 <label>Title</label>
 <input type="text" name="title" id="title" required="true" onblur="document.draft.input.value = this.value;">
 <label>content</label>
-<textarea name="content" required="true" id="content"></textarea><br>
+<input id="blogcontent" type="hidden" name="content" value="">
+<div id="editor">
+</div>
+<br>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Discard</button>
 <button  type="submit" name="newBlogPost" value="Publish" formaction="/newPost" >Publish</button>
 <button type="submit" formaction="/saveDraft" >Save as Draft</button>
@@ -31,3 +37,26 @@
   </div>
 </div>
 
+
+
+
+<script>
+ var quill = new Quill('#editor', {
+                modules: {
+                        toolbar: [
+                                ['bold', 'italic'],
+                                ['link', 'blockquote', 'code-block', 'image'],
+                                [{ list: 'ordered' }, { list: 'bullet' }]
+                        ]
+                },
+                placeholder: 'Compose an epic...',
+                theme: 'snow'
+        });
+        var form = document.querySelector('form');
+        form.onsubmit = function () {
+                // Populate hidden form on submit
+                var submitcontent = document.querySelector('input[name=content]');
+                submitcontent.value = quill.root.innerHTML;
+        };
+
+</script>

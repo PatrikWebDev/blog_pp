@@ -14,6 +14,10 @@ const db = new sqlite3.Database('BlogPosts.db')
 const app = express();
 const cors = require('cors')
 
+const bodyParser = require('body-parser')
+
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');

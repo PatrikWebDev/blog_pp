@@ -1,0 +1,39 @@
+<h1>New Post View</h1>
+<form method="POST" action="/newPost">
+<label>Title</label>
+<input type="text" name="title" required>
+<label>content</label>
+<div id="editor">
+
+<p>Editor's place</p>
+
+</div>
+
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Discard</button>
+<button type="submit" name="newBlogPost" value="Publish">Publish</button>
+
+</form>
+{{fail}}
+
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Discarding</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Discard changes?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" ><a href="http://localhost:3000/admin">Confirm</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
