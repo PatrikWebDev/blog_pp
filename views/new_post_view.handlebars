@@ -1,14 +1,15 @@
 <h1>New Post View</h1>
-<form method="POST" action="/newPost">
+<form name="newPost" method="POST">
 <label>Title</label>
-<input type="text" name="title" required>
+<input type="text" name="title" id="title" required="true" onblur="document.draft.input.value = this.value;">
 <label>content</label>
-<textarea name="content" required></textarea><br>
+<textarea name="content" required="true" id="content"></textarea><br>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Discard</button>
-<button type="submit" name="newBlogPost" value="Publish">Publish</button>
-
+<button  type="submit" name="newBlogPost" value="Publish" formaction="/newPost" >Publish</button>
+<button type="submit" formaction="/saveDraft" >Save as Draft</button>
 </form>
 {{fail}}
+
 
 <div class="modal" tabindex="-1" role="dialog" id="exampleModal">
   <div class="modal-dialog" role="document">

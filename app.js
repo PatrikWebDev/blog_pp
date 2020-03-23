@@ -1,7 +1,8 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const logControllerexport = require('./controllers/logControllers/logController.js')
-const newPost= require('./controllers/postControllers/new_post_controller')
+const newPostCont= require('./controllers/postControllers/new_post_controller')
+const newPost = new newPostCont.postHandling();
 const cookieParser = require('cookie-parser');
 const logController = new logControllerexport.logController();
 const postViewCont = require('./controllers/viewControllers/postViewControllers.js')
@@ -49,6 +50,8 @@ app.get('/newPostView',cookieChecker.cookieChecker,function(req, res){
 })
 
 app.post('/newPost',cookieChecker.cookieChecker, newPost.publishNewPost)
+
+app.post('/saveDraft', cookieChecker.cookieChecker, newPost.saveDraft)
 
 app.post('/logout', cookieChecker.cookieDeleter, function(req, res){
     res.redirect('/logOut')
