@@ -23,6 +23,7 @@ class postViewController {
     }
 
     singleViewRedirect(req, res) {
+        console.log(req.body)
         let { title } = req.body
         let slug = title.replace(/\s/g, "-")
         res.redirect(`/postView/${slug}`)

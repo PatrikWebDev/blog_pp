@@ -11,7 +11,7 @@
     <tbody>
         {{#each posts}}
         <tr>
-            <td class="text-center"> {{this.title}}</td>
+            <td class="text-center"> <a>{{this.title}}</a></td>
             <td class="text-center"> {{this.author}}</td>
             <td class="text-center"> {{this.date}}</td>
             <form method="Post" action="/editPost">

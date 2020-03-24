@@ -8,19 +8,19 @@
                 <th class="text-center">Title</th>
                 <th class="text-center">Author</th>
                 <th class="text-center">Date</th>
-                <th class="text-center" >View</th>
+                <th class="text-center" style="display: none;">View</th>
             </tr>
     </thead>
         <tbody>
-    <form method="POST" action="/postView">
+    <form id="myForm" method="POST" action="/postView">
     {{#each blogs}}
     <tr>
-        <td class="text-center"> {{this.title}}</td>
+        <td class="text-center"> <a id="cba{{this.title}}" href="#abc{{this.title}}"  onclick="document.getElementById(`abc{{this.title}}`).click();" >{{this.title}}</a></td>
             <td class="text-center"> {{this.author}}</td>
             <td class="text-center"> {{this.date}}</td>
-            <td class="text-center">
-    <button class="alert alert-primary" type="submit" name="title" value="{{this.title}}">
-        View Bolg Post
+            <td class="text-center" style="display: none;">
+    <button  class="alert alert-primary" type="submit" name="title" value="{{this.title}}" id="abc{{this.title}}">
+       View Bolg Post
     </button>
             </td>
     </div>
@@ -30,3 +30,4 @@
         </tbody>
     </table>
 </div>
+
