@@ -36,7 +36,6 @@ class newPostCont {
             created_at: creatingDate()
         }
 
-        console.log(blogPost, "post")
 
         db.serialize(function () {
 
@@ -54,8 +53,6 @@ class newPostCont {
             author: sessionId,
             created_at: creatingDate()
         }
-
-        console.log(blogPost, "draft")
 
         db.serialize(function () {
 

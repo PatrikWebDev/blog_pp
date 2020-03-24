@@ -1,6 +1,6 @@
 <button class="alert alert-primary" > <a href="/newPostView" target="_blank">New Post</a></button>
-<table>
-    <thead>
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
         <tr>
                 <th class="text-center">Title</th>
                 <th class="text-center">Author</th>
@@ -11,9 +11,9 @@
     <tbody>
         {{#each posts}}
         <tr>
-            <td> {{this.title}}</td>
-            <td> {{this.author}}</td>
-            <td> {{this.date}}</td>
+            <td class="text-center"> {{this.title}}</td>
+            <td class="text-center"> {{this.author}}</td>
+            <td class="text-center"> {{this.date}}</td>
             <form method="Post" action="/editPost">
             <input type="hidden" name="title" value="{{this.title}}">
             <input type="hidden" name="content" value="{{this.content}}">

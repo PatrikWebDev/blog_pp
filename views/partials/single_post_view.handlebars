@@ -1,15 +1,15 @@
-<div>
+<div class="shadow p-3 mb-5 bg-white rounded">
   {{#each post}}
-  <p>{{this.title}}</p>
-  <div class="row justify-content-between">
-    <div class="col-4">
-      {{this.author}}
+  <h1 style="text-align: center;">{{this.title}}</h1>
+  <div class="row justify-content-between border border-primary">
+    <div class="col-4" style="padding-right: 0%; padding-left: 0%">
+     <p style="padding-left: 10px;">By: {{this.author}} </p>
     </div>
-    <div class="col-4">
+    <div class="col-4" style="padding-right: 0%; padding-left: 0%">
       {{this.date}}
     </div>
   </div>
-  <div class="row  ql-editor">
+  <div class="row  ql-editor border border-primary">
     <p>
       {{{this.content}}}
     </p>
