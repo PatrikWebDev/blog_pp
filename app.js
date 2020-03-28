@@ -1,3 +1,6 @@
+//TODO: refactor newPost = NewPostController
+
+
 // EXPORTS
 const express = require('express');
 const exphbs = require('express-handlebars');

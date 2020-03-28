@@ -2,6 +2,25 @@
     <h1 style="text-align: center;">
         {{blogTitle}}
     </h1>
+<div class="row">
+<div class="col-3">
+    <ul>
+
+{{#each smth}}
+Év: {{@key}}
+    {{#each this}}
+    Hónap: {{@key}}
+        {{#each this}}
+        <li><a id="cba{{this}}" href="#abc{{this}}" onclick="document.getElementById(`abc{{this}}`).click();" >{{this}}</a></li>
+    {{/each}}
+    {{/each}}
+{{/each}}
+    </ul>
+</div>
+
+
+
+<div class="col-9">
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
         <tr>
@@ -23,11 +42,11 @@
        View Bolg Post
     </button>
             </td>
-    </div>
 {{/each}}
     </ul>
     </form>
         </tbody>
     </table>
+    </div>
 </div>
-
+</div>

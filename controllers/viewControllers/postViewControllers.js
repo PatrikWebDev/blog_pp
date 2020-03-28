@@ -17,7 +17,49 @@ class postViewController {
                 if (err != null) {
                     res.send("Missing from database")
                 }
-                res.render('home', { blogs: results, blogTitle: blogTitles });
+
+                let smth = {
+                }
+
+                results.forEach(element => {
+                    if (+(element.date)) {
+                        return element.date = new Date(+(element.date))
+                    }
+                    return element.date
+                })
+
+                results.forEach(element => {
+                    if (element.date == "Invalid Date") {
+                        return element.date = "Before Date was found"
+                    }
+                })
+
+                results.forEach(
+                    element => {
+                        const a = new Date(+(element.date))
+                        if (a == "Invalid Date") {
+                            return
+                        } else {
+                            const year = a.getFullYear()
+                            const month = (a.getMonth()) + 1
+                            
+                            if (!(year in smth)) {
+                                smth[year] = {}
+                            }
+
+                            if (!(month in smth[year])) {
+                                smth[year][month] = []
+                            }
+
+                            smth[year][month].push(element.title)
+
+                        }
+                    }
+
+
+
+                )
+                res.render('home', { blogs: results, blogTitle: blogTitles, smth });
             });
         });
     }
@@ -48,7 +90,21 @@ class postViewController {
                     if (err != null) {
                         res.send("Missing from database")
                     }
-                    res.render('singleView', { post: results})
+
+                    results.forEach(element => {
+                        if (+(element.date)) {
+                            return element.date = new Date(+(element.date))
+                        }
+                        return element.date
+                    })
+
+                    results.forEach(element => {
+                        if (element.date == "Invalid Date") {
+                            return element.date = "Before Date was found"
+                        }
+                    })
+
+                    res.render('singleView', { post: results })
                 }
                 )
             })
