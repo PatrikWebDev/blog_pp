@@ -1,0 +1,30 @@
+<div class="col-9">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+        <tr>
+                <th class="text-center">Title</th>
+                <th class="text-center">Author</th>
+                <th class="text-center">Date</th>
+                <th class="text-center" style="display: none;">View</th>
+            </tr>
+    </thead>
+        <tbody>
+    <form id="myForm" method="POST" action="/postView">
+    {{#each foundPosts}}
+    <tr>
+        <td class="text-center"> <a id="cba{{this.title}}" href="#abc{{this.title}}"  onclick="document.getElementById(`abc{{this.title}}`).click();" >{{this.title}}</a></td>
+            <td class="text-center"> {{this.author}}</td>
+            <td class="text-center"> {{this.date}}</td>
+            <td class="text-center" style="display: none;">
+    <button  class="alert alert-primary" type="submit" name="title" value="{{this.title}}" id="abc{{this.title}}">
+       View Bolg Post
+    </button>
+            </td>
+{{/each}}
+    </ul>
+    </form>
+        </tbody>
+    </table>
+    </div>
+</div>
+</div>

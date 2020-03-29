@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const postViewCont = require('./controllers/viewControllers/postViewControllers.js')
 const sessionControl = require ('./controllers/sessionController/sessionController.js')
 const newPostCont= require('./controllers/postControllers/new_post_controller')
+const searchEngine = require ('./controllers/searchControllers/searchControll.js')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 // ==================================================
@@ -15,6 +16,7 @@ const logController = new logControllerexport.LogController();
 const newPost = new newPostCont.NewPostCont();
 const cookieChecker =new sessionControl.SessionController()
 const viewCont = new postViewCont.PostViewController();
+const searchControll = new searchEngine.SearchEngine();
 // ====================================================
 
 // Egyéb működés szükséges dolgok
@@ -58,6 +60,10 @@ app.post('/editPost', cookieChecker.cookieChecker, viewCont.adminEdit)
 
 // saveDRaft Endpointhoz kapcsolódó endpointok
 app.post('/saveDraft', cookieChecker.cookieChecker, newPost.saveDraft)
+//=======================================
+
+// search Endpointhoz kapcsolódó endpointok
+app.post('/searching', cookieChecker.cookieChecker, searchControll.search)
 //=======================================
 
 app.listen(3000, ()=>{
