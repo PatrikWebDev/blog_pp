@@ -1,16 +1,36 @@
+// Működés szükséges dolgok
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('BlogPosts.db')
+// =========================================
 
 //memoriába egetett blog komponensek
 let blogTitles = [
     "Elso blog oldalam"
 ]
+// =========================================
 
-class postViewController {
-    constructor() {
 
+class PostViewController {
+    constructor() { }
+
+// többször használt backward compatibility-t megoldó dátum átalakítás
+    static dateChanger(dbValues){
+        dbValues.forEach(element => {
+            if (+(element.date)) {
+                return element.date = new Date(+(element.date))
+            }
+            return element.date
+        })
+
+        dbValues.forEach(element => {
+            if (element.date == "Invalid Date") {
+                return element.date = "Before Date was found"
+            }
+        })
     }
+// =========================================
 
+// a fő oldalon listázza a blog bejegyzéseket az oldalon egy archívummal
     postsListView(req, res) {
         db.serialize(function () {
             db.all("SELECT id, title, author, date FROM posts", function (err, results) {
@@ -18,21 +38,9 @@ class postViewController {
                     res.send("Missing from database")
                 }
 
-                let smth = {
-                }
-
-                results.forEach(element => {
-                    if (+(element.date)) {
-                        return element.date = new Date(+(element.date))
-                    }
-                    return element.date
-                })
-
-                results.forEach(element => {
-                    if (element.date == "Invalid Date") {
-                        return element.date = "Before Date was found"
-                    }
-                })
+                PostViewController.dateChanger(results)
+                
+                let smth = {}
 
                 results.forEach(
                     element => {
@@ -42,7 +50,7 @@ class postViewController {
                         } else {
                             const year = a.getFullYear()
                             const month = (a.getMonth()) + 1
-                            
+
                             if (!(year in smth)) {
                                 smth[year] = {}
                             }
@@ -55,31 +63,35 @@ class postViewController {
 
                         }
                     }
-
-
-
                 )
                 res.render('home', { blogs: results, blogTitle: blogTitles, smth });
             });
         });
     }
+    // =========================================
 
+    //a fő oldali listáról irányít át egy nézettre
     singleViewRedirect(req, res) {
         console.log(req.body)
         let { title } = req.body
         let slug = title.replace(/\s/g, "-")
         res.redirect(`/postView/${slug}`)
     }
+    // =========================================
 
-
+    // új post készítése
     newPostView(req, res) {
         res.render('new_post_view')
     }
+    // =========================================
 
+    // admin oldal nézette
     adminSite(req, res) {
         res.render('admin_site')
     }
+    // =========================================
 
+    // fő oldalról megnyitott egy blog bejegyzés nézette
     postsSingleView(req, res) {
         db.serialize(function () {
             db.all("SELECT title FROM posts", function (err, results) {
@@ -91,18 +103,7 @@ class postViewController {
                         res.send("Missing from database")
                     }
 
-                    results.forEach(element => {
-                        if (+(element.date)) {
-                            return element.date = new Date(+(element.date))
-                        }
-                        return element.date
-                    })
-
-                    results.forEach(element => {
-                        if (element.date == "Invalid Date") {
-                            return element.date = "Before Date was found"
-                        }
-                    })
+                    PostViewController.dateChanger(results)
 
                     res.render('singleView', { post: results })
                 }
@@ -110,7 +111,9 @@ class postViewController {
             })
         })
     }
+    // =========================================
 
+    // admin nézetttes listázása a postoknak
     adminPostList(req, res) {
         db.serialize(function () {
             db.all("SELECT title, author, date, content FROM posts", function (err, results) {
@@ -120,17 +123,17 @@ class postViewController {
                 res.render('admin_post_list', { posts: results })
             })
         })
-
     }
+    // =========================================
 
+    // egy publikált postot az admin szerkeszteni tud
     adminEdit(req, res) {
-        console.log(req.body)
         res.render('new_post_view', { posts: req.body })
     }
-
+    // =========================================
 }
 
 
 module.exports = {
-    viewCont: postViewController,
+    PostViewController: PostViewController,
 }

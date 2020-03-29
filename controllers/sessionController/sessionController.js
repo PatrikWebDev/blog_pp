@@ -2,7 +2,7 @@
 let sessions = {}
 
 
-class sessionController {
+class SessionController {
     constructor() { }
     // Leellenőrzi van-e érvényes sessionja a felhasználónak
     cookieChecker(req, res, next) {
@@ -15,6 +15,7 @@ class sessionController {
         req.session = session;
         next()
     }
+    // =========================================
     // törli a sessiont
     cookieDeleter(req,res, next){
         let {logout} = req.body;
@@ -26,10 +27,11 @@ class sessionController {
         }
         res.send('Problem while logging out')
     }
+    // =========================================
 }
 
 
 
 module.exports = {
-    sessionController: sessionController,
+    SessionController: SessionController,
 }

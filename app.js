@@ -1,6 +1,3 @@
-//TODO: refactor newPost = NewPostController
-
-
 // EXPORTS
 const express = require('express');
 const exphbs = require('express-handlebars');
@@ -14,10 +11,10 @@ const bodyParser = require('body-parser')
 // ==================================================
 
 // Példányosított Controllerek
-const logController = new logControllerexport.logController();
-const newPost = new newPostCont.postHandling();
-const cookieChecker =new sessionControl.sessionController()
-const viewCont = new postViewCont.viewCont();
+const logController = new logControllerexport.LogController();
+const newPost = new newPostCont.NewPostCont();
+const cookieChecker =new sessionControl.SessionController()
+const viewCont = new postViewCont.PostViewController();
 // ====================================================
 
 // Egyéb működés szükséges dolgok
@@ -32,32 +29,37 @@ app.use(express.urlencoded({extended: true}))
 app.use(cors())
 // =========================================
 
-// View Controlls
-    // GET
-    app.get('/', viewCont.postsListView);
-    app.get('/postView/:title', viewCont.postsSingleView);
-    app.get('/adminPostList', cookieChecker.cookieChecker, viewCont.adminPostList)
-    app.get('/admin', cookieChecker.cookieChecker , viewCont.adminSite)
-    app.get('/newPostView',cookieChecker.cookieChecker, viewCont.newPostView)
-    // POST
-    app.post('/postView', viewCont.singleViewRedirect);
-    app.post('/editPost', cookieChecker.cookieChecker, viewCont.adminEdit)
-//=======================================
-    
-// LOG IN/OUT Controlls
-    // GET
-    app.get('/login', logController.loginGet)
-    app.get('/logOut',  logController.logoutGet)
-    // POST
-    app.post('/login', logController.loginPost)
-    app.post('/logout', cookieChecker.cookieDeleter, logController.logoutPost)
-    // ================================================
-    
-    // NewPost Controlls
-    // GET
-    // POST
-    app.post('/newPost',cookieChecker.cookieChecker, newPost.publishNewPost)
-    app.post('/saveDraft', cookieChecker.cookieChecker, newPost.saveDraft)
-// =============================================
+// postView Endpointhoz kapcsolódó endpointok
+app.get('/', viewCont.postsListView);
+app.get('/postView/:title', viewCont.postsSingleView);
+app.post('/postView', viewCont.singleViewRedirect);
+// =========================================
 
-app.listen(3000);
+// admin Endpointhoz kapcsolódó endpointok
+app.get('/adminPostList', cookieChecker.cookieChecker, viewCont.adminPostList)
+app.get('/admin', cookieChecker.cookieChecker , viewCont.adminSite)
+// =========================================
+
+// login/out Endpointhoz kapcsolódó endpointok
+app.get('/login', logController.loginGet)
+app.get('/logOut',  logController.logoutGet)
+app.post('/login', logController.loginPost)
+app.post('/logout', cookieChecker.cookieDeleter, logController.logoutPost)
+// =========================================
+
+// newPost Endpointhoz kapcsolódó endpointok
+app.post('/newPost',cookieChecker.cookieChecker, newPost.publishNewPost)
+app.get('/newPostView',cookieChecker.cookieChecker, viewCont.newPostView)
+// =========================================
+
+// editPost Endpointhoz kapcsolódó endpointok
+app.post('/editPost', cookieChecker.cookieChecker, viewCont.adminEdit)
+// =========================================
+
+// saveDRaft Endpointhoz kapcsolódó endpointok
+app.post('/saveDraft', cookieChecker.cookieChecker, newPost.saveDraft)
+//=======================================
+
+app.listen(3000, ()=>{
+    console.log("server started")
+});
