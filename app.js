@@ -1,23 +1,19 @@
-// EXPORTS
+// IMPORTS
 const express = require('express');
 const exphbs = require('express-handlebars');
-const logControllerexport = require('./controllers/logControllers/logController.js')
 const cookieParser = require('cookie-parser');
-const postViewCont = require('./controllers/viewControllers/postViewControllers.js')
-const sessionControl = require ('./controllers/sessionController/sessionController.js')
-const newPostCont= require('./controllers/postControllers/new_post_controller')
-const searchEngine = require ('./controllers/searchControllers/searchControll.js')
-const cors = require('cors')
+const cors = require('cors');
 const bodyParser = require('body-parser')
 // ==================================================
+// Controller Imports
+const postViewController = require('./controllers/viewController/post-view-controllers.js').PostViewController
+const logInOutController = require('./controllers/logInOutController/log-in-out-controller.js').LogInOutController
+const sessionController = require ('./controllers/sessionController/session-controller.js').SessionController
+const newPostController = require('./controllers/postController/new-post-controller.js').NewPostController
+const searchEngine = require ('./controllers/searchController/search-controller.js').SearchEngine
+// const dbchanger = require ('./controllers/databaseControllers/databaseControll.js')
+// ==================================================
 
-// Példányosított Controllerek
-const logController = new logControllerexport.LogController();
-const newPost = new newPostCont.NewPostCont();
-const cookieChecker =new sessionControl.SessionController()
-const viewCont = new postViewCont.PostViewController();
-const searchControll = new searchEngine.SearchEngine();
-// ====================================================
 
 // Egyéb működés szükséges dolgok
 const app = express();
@@ -32,38 +28,42 @@ app.use(cors())
 // =========================================
 
 // postView Endpointhoz kapcsolódó endpointok
-app.get('/', viewCont.postsListView);
-app.get('/postView/:title', viewCont.postsSingleView);
-app.post('/postView', viewCont.singleViewRedirect);
+app.get('/', new postViewController().postsListView);
+ app.get('/postView/:title', new postViewController().postsSingleView);
+app.post('/postView', new postViewController().singleViewRedirect);
 // =========================================
 
 // admin Endpointhoz kapcsolódó endpointok
-app.get('/adminPostList', cookieChecker.cookieChecker, viewCont.adminPostList)
-app.get('/admin', cookieChecker.cookieChecker , viewCont.adminSite)
+app.get('/adminPostList', new sessionController().cookieChecker, new postViewController().adminPostList)
+app.get('/admin', new sessionController().cookieChecker , new postViewController().adminSite)
 // =========================================
 
 // login/out Endpointhoz kapcsolódó endpointok
-app.get('/login', logController.loginGet)
-app.get('/logOut',  logController.logoutGet)
-app.post('/login', logController.loginPost)
-app.post('/logout', cookieChecker.cookieDeleter, logController.logoutPost)
+app.get('/login', new logInOutController().loginGet)
+app.get('/logOut',  new logInOutController().logoutGet)
+app.post('/login', new logInOutController().loginPost)
+app.post('/logout', new sessionController().cookieDeleter, new logInOutController().logoutPost)
 // =========================================
 
 // newPost Endpointhoz kapcsolódó endpointok
-app.post('/newPost',cookieChecker.cookieChecker, newPost.publishNewPost)
-app.get('/newPostView',cookieChecker.cookieChecker, viewCont.newPostView)
+app.post('/newPost',new sessionController().cookieChecker, new newPostController().publishNewPost)
+app.get('/newPostView',new sessionController().cookieChecker, new postViewController().newPostView)
 // =========================================
 
 // editPost Endpointhoz kapcsolódó endpointok
-app.post('/editPost', cookieChecker.cookieChecker, viewCont.adminEdit)
+app.post('/editPost', new sessionController().cookieChecker, new postViewController().adminEdit)
 // =========================================
 
 // saveDRaft Endpointhoz kapcsolódó endpointok
-app.post('/saveDraft', cookieChecker.cookieChecker, newPost.saveDraft)
+app.post('/saveDraft', new sessionController().cookieChecker, new newPostController().saveDraft)
 //=======================================
 
 // search Endpointhoz kapcsolódó endpointok
-app.post('/searching', cookieChecker.cookieChecker, searchControll.search)
+app.post('/searching', new sessionController().cookieChecker, new searchEngine().search)
+//=======================================
+
+// datbase Endpointhoz kapcsolódó endpointok
+// app.post('/databaseChange', new sessionControl.SessionController().cookieChecker, new dbchanger.DatabaseControll().changing)
 //=======================================
 
 app.listen(3000, ()=>{

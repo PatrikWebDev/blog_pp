@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('BlogPosts.db')
+const db = new sqlite3.Database('BlogPosts2.db')
 function creation() {
     db.serialize(function () {
         

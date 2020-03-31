@@ -1,12 +1,10 @@
 // Működés szükséges dolgok
 const uuid = require('uuid')
 const uuidv4 = uuid.v4
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('BlogPosts.db')
+const repository = require('../../repositories/blog-post-repository.js').BlogPostRepository
 // =========================================
 
-class NewPostCont {
-    constructor() { }
+class NewPostController {
 // egy function ami létrehozza a dátumot több helyen használható
     static creatingDate() {
 
@@ -39,10 +37,7 @@ class NewPostCont {
             created_at: +(new Date()),
         }
 
-            db.serialize(function () {
-                db.run(`INSERT INTO posts ( id, title, content, author, date) VALUES ("${blogPost.id}", "${blogPost.title}", "${blogPost.content}", "${blogPost.author}", "${blogPost.created_at}")`)
-            })
-
+        new repository().insertingPublishedPosts(blogPost)
 
         res.redirect('/admin')
     }
@@ -58,11 +53,7 @@ class NewPostCont {
             created_at:  +(new Date()),
         }
 
-        db.serialize(function () {
-
-            db.run(`INSERT INTO drafts ( id, title, content, author, date) VALUES ("${blogPost.id}", "${blogPost.title}", "${blogPost.content}", "${blogPost.author}", "${blogPost.created_at}")`)
-
-        })
+        new repository().inserintDraftedPosts(blogPost)
         res.redirect('/admin')
     }
 // =========================================
@@ -70,5 +61,5 @@ class NewPostCont {
 
 
 module.exports = {
-    NewPostCont: NewPostCont,
+    NewPostController
 }

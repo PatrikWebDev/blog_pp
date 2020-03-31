@@ -3,9 +3,25 @@
 <button class="alert alert-primary" type="submit" name="logout" value="logout" style="float: right;">logout</button>
 
 </form>
-
+<div class="row">
+    <div class="col-3">
 <img src="img/pencil_icon.jpg" alt="Ikon of a pencil" style=" width: 150px; height: 150px">
 <div>
 <a href="http://localhost:3000/newPostView" target="_blank">New Post</a> <br>
 <a href="http://localhost:3000/adminPostList" target="_blank">Post Lists</a>
+</div>
+    </div>
+    <div class="col-3">
+<img src="img/database.png" alt="Ikon of a database" style=" width: 150px; height: 150px">
+<form method="POST" action="/databaseChange">
+<select name="choosenDB">
+{{#each database}}
+<option value="{{this}}">{{this}}</option>
+{{/each}}
+</select>
+<button type="submit" class="alert alert-primary">Change Database</button>
+</form>
+    </div>
+    <div class="col-3"></div>
+
 </div>

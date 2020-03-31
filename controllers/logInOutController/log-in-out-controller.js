@@ -4,7 +4,7 @@ let admin = {
     password: "password"
 }
 
-class LogController{
+class LogInOutController{
     constructor(){}
 // =========================================
 // Bejelentkezési oldalt rendereli
@@ -41,5 +41,5 @@ class LogController{
 }
 
 module.exports = {
-LogController: LogController,
+    LogInOutController
 }
