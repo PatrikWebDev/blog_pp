@@ -5,7 +5,7 @@ let blogTitles = [
 class BlogPostService {
     search(controllerCallback, keyWord) {
         let foundPosts = []
-        repository.findAll(function (err, results) {
+        new repository().findAll(function (err, results) {
             if (err != null) {
                 controllerCallback.send(err, [])
                 return
