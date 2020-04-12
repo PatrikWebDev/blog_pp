@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3')
 const config = require('../config.json')
-const db = new sqlite3.Database(config.dbpath)
+const path = config.dbpath
+const db = new sqlite3.Database(path)
 
 class BlogPostRepository {
     findAll(serviceCallback) {

@@ -11,7 +11,7 @@ const logInOutController = require('./controllers/logInOutController/log-in-out-
 const sessionController = require ('./controllers/sessionController/session-controller.js').SessionController
 const newPostController = require('./controllers/postController/new-post-controller.js').NewPostController
 const searchEngine = require ('./controllers/searchController/search-controller.js').SearchEngine
-// const dbchanger = require ('./controllers/databaseControllers/databaseControll.js')
+const databaseControll = require ('./controllers/databaseController/database-controller').DatabaseController
 // ==================================================
 
 
@@ -63,7 +63,7 @@ app.post('/searching', new sessionController().cookieChecker, new searchEngine()
 //=======================================
 
 // datbase Endpointhoz kapcsolódó endpointok
-// app.post('/databaseChange', new sessionControl.SessionController().cookieChecker, new dbchanger.DatabaseControll().changing)
+app.post('/databaseChange', new sessionController().cookieChecker, new databaseControll().changing)
 //=======================================
 
 app.listen(3000, ()=>{

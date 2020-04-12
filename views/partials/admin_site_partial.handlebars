@@ -14,11 +14,7 @@
     <div class="col-3">
 <img src="img/database.png" alt="Ikon of a database" style=" width: 150px; height: 150px">
 <form method="POST" action="/databaseChange">
-<select name="choosenDB">
-{{#each database}}
-<option value="{{this}}">{{this}}</option>
-{{/each}}
-</select>
+<input type="text" name="choosenDB">
 <button type="submit" class="alert alert-primary">Change Database</button>
 </form>
     </div>

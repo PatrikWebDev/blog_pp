@@ -1,13 +1,8 @@
 const sqlite3 = require ('sqlite3').verbose()
-const databases = ['BlogPosts.db', 'BlogPosts2.db'];
-let db = new sqlite3.Database('BlogPostsArr.db')
+const dbPath = require('../../config.json').dbpath
+let db = new sqlite3.Database(dbPath)
 const fs = require('fs')
 
-function changer(req, res){
-    let {choosenDB } = req.body;
-    db.filename= `${choosenDB}`
-    return db
-}
 
 function getDB() {
     return db
@@ -17,20 +12,15 @@ class DatabaseController {
 
 // changes the database
     changing(req, res){
+        console.log("bejött")
         let {choosenDB } = req.body;
-        fs.readFileSync()
-        db = new sqlite3.Database(choosenDB)
-        if(choosenDB == databases[0]){
-            db.serialize(function(){
-                db.run(`ATTACH DATABASE ${db1} AS "temp"; DETACH DATABASE ${db2}`)
-                }
-            ) 
+        let dbpath = {
+            dbpath: choosenDB
         }
-        db.serialize(function(){
-            db.run(`ATTACH DATABASE ${db2} AS db1; DETACH DATABASE ${db1}`)
-            }
-        )
-
+        fs.writeFileSync('config.json',JSON.stringify(dbpath))
+        fs.readFileSync('config.json', (err, data)=>{
+            console.log(data)
+        })
         res.redirect('/admin')
     }
 }
@@ -39,5 +29,5 @@ class DatabaseController {
 
 module.exports = {
     getDB,
-    DatabaseControll,
+    DatabaseController,
 }
