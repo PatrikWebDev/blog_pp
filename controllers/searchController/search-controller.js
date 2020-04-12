@@ -5,7 +5,12 @@ class SearchEngine {
 // Megadott kereső szó alapján keress
     search(req, res){
         let {keyWord} = req.body
-        new blogPostService().search(res,keyWord)
+        let {keyTag} = req.body
+        if(!(keyWord)){
+            new blogPostService().search(res,keyTag)   
+        }else{
+            new blogPostService().search(res,keyWord)
+        }
 }
 // =========================================
 

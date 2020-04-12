@@ -4,13 +4,14 @@ let blogTitles = [
 ]
 class BlogPostService {
     search(controllerCallback, keyWord) {
+        console.log(keyWord)
         let foundPosts = []
         new repository().findAll(function (err, results) {
             if (err != null) {
                 controllerCallback.send(err, [])
                 return
             }
-            
+             
             results.forEach(element => {
                 if (+(element.date)) {
                     return element.date = new Date(+(element.date))
@@ -23,10 +24,9 @@ class BlogPostService {
                     return element.date = "Before Date was found"
                 }
             })
-
             results.forEach(element=>{
                 //UpperCase alakítsuk így mindegy hogy hogy írják be a szót és keressük titleben és contentben is
-             if(((element.content).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.title).toUpperCase()).includes(keyWord.toUpperCase())){
+             if(((element.content).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.title).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.tags).toUpperCase()).includes(keyWord.toUpperCase())){
                 foundPosts.push(element)   
             }
             return
@@ -79,7 +79,23 @@ class BlogPostService {
                     }
                 }
             )
-            controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth })
+
+            let tags = []
+
+            results.forEach(
+                element =>{
+                    (element.tags.split(',')).forEach(
+                        mostInnerArr=>{
+                            console.log(mostInnerArr)
+                            if (!(tags.includes(mostInnerArr))) {
+                               tags.push(mostInnerArr)
+                            }
+                        }
+                    )
+                }
+            )
+                console.log(tags)
+            controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags })
         })
 
     }
@@ -106,7 +122,6 @@ class BlogPostService {
             controllerCallback.render('admin_post_list', { posts: results })
         }
         )
-
     }
 
 

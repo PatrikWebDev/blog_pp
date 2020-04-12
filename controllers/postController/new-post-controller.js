@@ -28,15 +28,16 @@ class NewPostController {
         }
 
         let { sessionId } = req.cookies
-
+        console.log(req.body.tags.split(','))
         let blogPost = {
             id: `${uuidv4()}`,
             title: req.body.title,
             content: req.body.content,
             author: sessionId,
             created_at: +(new Date()),
+            tags: req.body.tags.split(',')
         }
-
+        console.log(blogPost.tags)
         new repository().insertingPublishedPosts(blogPost)
 
         res.redirect('/admin')
@@ -51,6 +52,7 @@ class NewPostController {
             content: req.body.content,
             author: sessionId,
             created_at:  +(new Date()),
+            tags: req.body.tags
         }
 
         new repository().inserintDraftedPosts(blogPost)
