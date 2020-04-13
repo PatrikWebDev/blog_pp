@@ -13,6 +13,7 @@ const newPostController = require('./controllers/postController/new-post-control
 const searchEngine = require ('./controllers/searchController/search-controller.js').SearchEngine
 const databaseControll = require ('./controllers/databaseController/database-controller').DatabaseController
 const appearanceController = require ('./controllers/viewController/appearance-controller').AppearanceController
+const userController = require ('./controllers/userController/user-controller').UserController
 // ==================================================
 
 
@@ -69,6 +70,10 @@ app.post('/databaseChange', new sessionController().cookieChecker, new databaseC
 
 // theme Endpointhoz kapcsolódó endpointok
 app.post('/themeChanger', new sessionController().cookieChecker, new appearanceController().themeChanger)
+//=======================================
+
+// newUser Endpointhoz kapcsolódó endpointok
+app.post('/newUser', new sessionController().cookieChecker, new userController().newUser)
 //=======================================
 
 app.listen(3000, ()=>{

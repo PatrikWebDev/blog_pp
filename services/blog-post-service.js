@@ -87,7 +87,7 @@ class BlogPostService {
                 element =>{
                     (element.tags.split(',')).forEach(
                         mostInnerArr=>{
-                            console.log(mostInnerArr)
+                            console.log(mostInnerArr, !(tags.includes(mostInnerArr)))
                             if (!(tags.includes(mostInnerArr))) {
                                tags.push(mostInnerArr)
                             }
@@ -95,7 +95,7 @@ class BlogPostService {
                     )
                 }
             )
-                console.log(tags)
+                
             controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags, css: `/themes/${css}.css`})
         })
 
