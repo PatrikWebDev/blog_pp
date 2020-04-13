@@ -1,4 +1,5 @@
 const repository = require('../repositories/blog-post-repository').BlogPostRepository
+const css = require ('../theme.json').path
 let blogTitles = [
     "Elso blog oldalam"
 ]
@@ -32,7 +33,7 @@ class BlogPostService {
             return
             })
 
-            controllerCallback.render('results', {foundPosts})
+            controllerCallback.render('results', {foundPosts, css: `/themes/${css}.css`})
 
         })
     }
@@ -95,7 +96,7 @@ class BlogPostService {
                 }
             )
                 console.log(tags)
-            controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags })
+            controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags, css: `/themes/${css}.css`})
         })
 
     }
@@ -119,7 +120,7 @@ class BlogPostService {
                 }
             })
 
-            controllerCallback.render('admin_post_list', { posts: results })
+            controllerCallback.render('admin_post_list', { posts: results, css: `/themes/${css}.css`})
         }
         )
     }

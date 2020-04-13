@@ -2,6 +2,7 @@
  const sqlite3 = require('sqlite3')
  const config = require('../../config.json')
  const db = new sqlite3.Database(config.dbpath)
+ const css = require ('../../theme.json').path
  // =========================================
 
 class PostViewController {
@@ -35,19 +36,19 @@ class PostViewController {
         console.log(req.body)
         let { title } = req.body
         let slug = title.replace(/\s/g, "-")
-        res.redirect(`/postView/${slug}`)
+        res.redirect(`/postView/${slug}`, {css: `/themes/${css}.css`})
     }
     // =========================================
 
     // új post készítése
     newPostView(req, res) {
-        res.render('new_post_view')
+        res.render('new_post_view',  {css: `/themes/${css}.css`})
     }
     // =========================================
 
     // admin oldal nézette
     adminSite(req, res) {
-        res.render('admin_site',/* {database: databases, currentDB: db.filename}*/)
+        res.render('admin_site',  {css: `/themes/${css}.css`})
     }
     // =========================================
 
@@ -65,7 +66,7 @@ class PostViewController {
 
                     PostViewController.dateChanger(results)
 
-                    res.render('singleView', { post: results })
+                    res.render('singleView', { post: results, css: `/themes/${css}.css`})
                 }
                 )
             })
@@ -81,7 +82,7 @@ class PostViewController {
 
     // egy publikált postot az admin szerkeszteni tud
     adminEdit(req, res) {
-        res.render('new_post_view', { posts: req.body })
+        res.render('new_post_view', { posts: req.body, css: `/themes/${css}.css`})
     }
     // =========================================
 }

@@ -12,7 +12,6 @@ class DatabaseController {
 
 // changes the database
     changing(req, res){
-        console.log("bejött")
         let {choosenDB } = req.body;
         let dbpath = {
             dbpath: choosenDB
