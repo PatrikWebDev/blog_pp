@@ -34,6 +34,12 @@
             <form method="POST" action="/newUser">
             <input type="text" name="username" placeholder="new user">
             <input type="password" name="password" placeholder="password">
+            <input type="text" name="email" placeholder="email">
+            <select id="auth" name="auth">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="superAdmin">Super Admin</option>
+        </select>
             <button type="submit" class="alert alert-primary">Create new user</button>
             </form>
         </div>

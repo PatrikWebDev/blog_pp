@@ -29,7 +29,8 @@ async    postsListView(req, res) {
             res.render('home', {
                 blogs: results.results,
                 blogTitle: results.blogTitles,
-                historyObject: results.historyObject
+                historyObject: results.historyObject,
+                tags: results.tags
             })
     }
     // =========================================
@@ -38,7 +39,7 @@ async    postsListView(req, res) {
     singleViewRedirect(req, res) {
         let { title } = req.body
         let slug = title.replace(/\s/g, "-")
-        res.redirect(`/postView/${slug}`, {css: `/themes/${css}.css`})
+        res.redirect(`/postView/${slug}`)
     }
     // =========================================
 

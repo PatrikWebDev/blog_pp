@@ -13,7 +13,7 @@ const newPost= require('./controllers/postController/new-post-controller.js').Ne
 const search= require ('./controllers/searchController/search-controller.js').SearchEngine
 const databaseControll = require ('./controllers/databaseController/database-controller').DatabaseController
 const appearanceController = require ('./controllers/viewController/appearance-controller').AppearanceController
-const userController = require ('./controllers/userController/user-controller').UserController
+const user = require ('./controllers/userController/user-controller').UserController
 // ==================================================
 
 const blogService = require('./services/blog-post-service.js').BlogPostService
@@ -27,6 +27,7 @@ const newPostController = new newPost(new repository(),JWT)
 const searchController= new search(new blogService(new repository()))
 const logInOutController = new logInOut(new audiencerepository(),JWT)
 const sessionController = new session(JWT)
+const userController = new user(new audiencerepository())
 
 // Egyéb működés szükséges dolgok
 const app = express();
@@ -80,11 +81,11 @@ app.post('/databaseChange', sessionController.cookieChecker.bind(sessionControll
 //=======================================
 
 // theme Endpointhoz kapcsolódó endpointok
-app.post('/themeChanger', new sessionController().cookieChecker, new appearanceController().themeChanger)
+app.post('/themeChanger', sessionController.cookieChecker.bind(sessionController), new appearanceController().themeChanger)
 //=======================================
 
 // newUser Endpointhoz kapcsolódó endpointok
-app.post('/newUser', new sessionController().cookieChecker, new userController().newUser)
+app.post('/newUser', sessionController.cookieChecker.bind(sessionController), userController.newUser.bind(userController))
 //=======================================
 
 app.listen(3000, ()=>{

@@ -85,34 +85,35 @@ async postListView() {
                     }
                 }
             )
+
+            // const tags = []
+
+            //     results.forEach(
+            //         element =>{
+            //             (element.tags.split(',')).forEach(
+            //                 mostInnerArr=>{
+            //                     console.log(mostInnerArr, !(tags.includes(mostInnerArr)))
+            //                     if (!(tags.includes(mostInnerArr))) {
+            //                        tags.push(mostInnerArr)
+            //                     }
+            //                 }
+            //             )
+            //         }
+            //    )
+
             const returnObject = {
                 results: results,
                 title: blogTitles,
-                historyObject: historyObject
+                historyObject: historyObject,
+                // tags: tags
             }
             return returnObject
+
         }catch(error){
             if (error != null) {
                 return 'Missing from database'
             }
-        }
-        // let tags = []
-
-        //     results.forEach(
-        //         element =>{
-        //             (element.tags.split(',')).forEach(
-        //                 mostInnerArr=>{
-        //                     console.log(mostInnerArr, !(tags.includes(mostInnerArr)))
-        //                     if (!(tags.includes(mostInnerArr))) {
-        //                        tags.push(mostInnerArr)
-        //                     }
-        //                 }
-        //             )
-        //         }
-        //     )
-
-        //     controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags, css: `/themes/${css}.css`})
-               
+        }             
     }
 
 async adminPostList() {

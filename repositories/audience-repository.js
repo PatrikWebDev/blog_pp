@@ -29,6 +29,12 @@ class AudienceRepository{
             })
         })
     }
+
+    newUser(userData){
+        db.serialize(function () {
+            db.run(`INSERT INTO audience ( username, password, email, admin, superAdmin) VALUES ("${userData.name}", "${userData.password}", "${userData.email}", "${userData.admin}", "${userData.superAdmin}")`)
+        })
+    }
 }
 
 module.exports={
