@@ -3,7 +3,6 @@ let sessions = {}
 
 
 class SessionController {
-    constructor() { }
     // Leellenőrzi van-e érvényes sessionja a felhasználónak
     cookieChecker(req, res, next) {
         const authCookie = req.cookies;

@@ -1,10 +1,12 @@
 // Működés szükséges dolgok
 const uuid = require('uuid')
 const uuidv4 = uuid.v4
-const repository = require('../../repositories/blog-post-repository.js').BlogPostRepository
 // =========================================
 
 class NewPostController {
+    constructor(repository){
+        this.repository = repository
+    }
 // egy function ami létrehozza a dátumot több helyen használható
     static creatingDate() {
 
@@ -37,7 +39,7 @@ class NewPostController {
             created_at: +(new Date()),
         }
 
-        new repository().insertingPublishedPosts(blogPost)
+        this.repository.insertingPublishedPosts(blogPost)
 
         res.redirect('/admin')
     }
@@ -53,7 +55,7 @@ class NewPostController {
             created_at:  +(new Date()),
         }
 
-        new repository().inserintDraftedPosts(blogPost)
+        this.repository.inserintDraftedPosts(blogPost)
         res.redirect('/admin')
     }
 // =========================================

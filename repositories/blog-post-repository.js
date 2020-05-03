@@ -18,6 +18,21 @@ class BlogPostRepository {
         })
     }
 
+    selectSpecific(searchCategory, searchWord){
+        return new Promise((resolve,reject)=>{
+            db.serialize(function(){
+                db.all(`SELECT title, content, author, date FROM posts WHERE ${searchCategory}= "${searchWord}"`, (err, result)=>{
+                    if(err){
+                        reject(err);
+                        return
+                    }
+                    resolve(result) 
+                })
+            })
+        })
+    }
+
+
     insertingPublishedPosts(blogPost){
         db.serialize(function () {
             db.run(`INSERT INTO posts ( id, title, content, author, date) VALUES ("${blogPost.id}", "${blogPost.title}", "${blogPost.content}", "${blogPost.author}", "${blogPost.created_at}")`)
