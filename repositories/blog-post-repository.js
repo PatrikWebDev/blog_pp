@@ -4,9 +4,17 @@ const path = config.dbpath
 const db = new sqlite3.Database(path)
 
 class BlogPostRepository {
-    findAll(serviceCallback) {
-        db.serialize(function(){
-            db.all("SELECT id, title, content, author, date FROM posts", serviceCallback)
+    findAll() {
+        return new Promise((resolve, reject)=>{
+            db.serialize(function(){
+                db.all("SELECT id, title, content, author, date FROM posts",(err, result)=>{
+                    if(err){
+                        reject(err);
+                        return
+                    }
+                    resolve(result)
+                })
+            })
         })
     }
 
