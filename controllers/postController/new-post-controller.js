@@ -4,8 +4,9 @@ const uuidv4 = uuid.v4
 // =========================================
 
 class NewPostController {
-    constructor(repository){
-        this.repository = repository
+    constructor(repository, JWT){
+        this.repository = repository,
+        this.jwt = JWT
     }
 // egy function ami létrehozza a dátumot több helyen használható
     static creatingDate() {
@@ -28,14 +29,13 @@ class NewPostController {
         if (req.body.title == false && req.body.content == false) {
             res.render('new_post_view', { fail: failmessage })
         }
-
-        let { sessionId } = req.cookies
-
+        const { sessionId } = req.cookies
+        const {payload:{username}} = this.jwt.decode(sessionId)
         let blogPost = {
             id: `${uuidv4()}`,
             title: req.body.title,
             content: req.body.content,
-            author: sessionId,
+            author: username,
             created_at: +(new Date()),
         }
 
@@ -47,11 +47,13 @@ class NewPostController {
 
 // a blog bejegyzés piszkozatként való elmentése
     saveDraft(req, res) {
+        const { sessionId } = req.cookies
+        const {payload:{username}} = this.jwt.decode(sessionId)
         let blogPost = {
             id: `${uuidv4()}`,
             title: req.body.title,
             content: req.body.content,
-            author: sessionId,
+            author: username,
             created_at:  +(new Date()),
         }
 

@@ -7,8 +7,8 @@ const bodyParser = require('body-parser')
 // ==================================================
 // Controller Imports
 const postView = require('./controllers/viewController/post-view-controllers.js').PostViewController
-const logInOutController = require('./controllers/logInOutController/log-in-out-controller.js').LogInOutController
-const sessionController = require ('./controllers/sessionController/session-controller.js').SessionController
+const logInOut = require('./controllers/logInOutController/log-in-out-controller.js').LogInOutController
+const session = require ('./controllers/sessionController/session-controller.js').SessionController
 const newPost= require('./controllers/postController/new-post-controller.js').NewPostController
 const search= require ('./controllers/searchController/search-controller.js').SearchEngine
 const databaseControll = require ('./controllers/databaseController/database-controller').DatabaseController
@@ -16,11 +16,15 @@ const databaseControll = require ('./controllers/databaseController/database-con
 
 const blogService = require('./services/blog-post-service.js').BlogPostService
 const repository = require('./repositories/blog-post-repository.js').BlogPostRepository
+const audiencerepository = require('./repositories/audience-repository').AudienceRepository
+const JWT = require('./tokens/jwt.js')
+
 
 const postViewController = new postView(new blogService(new repository()))
-const newPostController = new newPost(new repository())
+const newPostController = new newPost(new repository(),JWT)
 const searchController= new search(new blogService(new repository()))
-
+const logInOutController = new logInOut(new audiencerepository(),JWT)
+const sessionController = new session(JWT)
 
 // Egyéb működés szükséges dolgok
 const app = express();
@@ -36,41 +40,41 @@ app.use(cors())
 
 // postView Endpointhoz kapcsolódó endpointok
 app.get('/', postViewController.postsListView.bind(postViewController));
- app.get('/postView/:title', postViewController.postsSingleView.bind(postViewController));
+app.get('/postView/:title', postViewController.postsSingleView.bind(postViewController));
 app.post('/postView', postViewController.singleViewRedirect.bind(postViewController));
 // =========================================
 
 // admin Endpointhoz kapcsolódó endpointok
-app.get('/adminPostList', new sessionController().cookieChecker, postViewController.adminPostList.bind(postViewController))
-app.get('/admin', new sessionController().cookieChecker , postViewController.adminSite.bind(postViewController))
+app.get('/adminPostList', sessionController.cookieChecker.bind(sessionController), postViewController.adminPostList.bind(postViewController))
+app.get('/admin', sessionController.cookieChecker.bind(sessionController), postViewController.adminSite.bind(postViewController))
 // =========================================
 
 // login/out Endpointhoz kapcsolódó endpointok
-app.get('/login', new logInOutController().loginGet)
-app.get('/logOut',  new logInOutController().logoutGet)
-app.post('/login', new logInOutController().loginPost)
-app.post('/logout', new sessionController().cookieDeleter, new logInOutController().logoutPost)
+app.get('/login', logInOutController.loginGet.bind(logInOutController))
+app.get('/logOut', logInOutController.logoutGet.bind(logInOutController))
+app.post('/login', logInOutController.loginPost.bind(logInOutController))
+app.post('/logout', sessionController.cookieDeleter.bind(sessionController), logInOutController.logoutPost.bind(logInOutController))
 // =========================================
 
 // newPost Endpointhoz kapcsolódó endpointok
-app.post('/newPost',new sessionController().cookieChecker, newPostController.publishNewPost.bind(newPostController))
-app.get('/newPostView',new sessionController().cookieChecker, postViewController.newPostView.bind(postViewController))
+app.post('/newPost', sessionController.cookieChecker.bind(sessionController), newPostController.publishNewPost.bind(newPostController))
+app.get('/newPostView', sessionController.cookieChecker.bind(sessionController), postViewController.newPostView.bind(postViewController))
 // =========================================
 
 // editPost Endpointhoz kapcsolódó endpointok
-app.post('/editPost', new sessionController().cookieChecker, postViewController.adminEdit.bind(postViewController))
+app.post('/editPost', sessionController.cookieChecker.bind(sessionController), postViewController.adminEdit.bind(postViewController))
 // =========================================
 
 // saveDRaft Endpointhoz kapcsolódó endpointok
-app.post('/saveDraft', new sessionController().cookieChecker, newPostController.saveDraft.bind(newPostController))
+app.post('/saveDraft', sessionController.cookieChecker.bind(sessionController), newPostController.saveDraft.bind(newPostController))
 //=======================================
 
 // search Endpointhoz kapcsolódó endpointok
-app.post('/searching', new sessionController().cookieChecker, searchController.search.bind(searchController))
+app.post('/searching', sessionController.cookieChecker.bind(sessionController), searchController.search.bind(searchController))
 //=======================================
 
 // datbase Endpointhoz kapcsolódó endpointok
-app.post('/databaseChange', new sessionController().cookieChecker, new databaseControll().changing)
+app.post('/databaseChange', sessionController.cookieChecker.bind(sessionController), new databaseControll().changing)
 //=======================================
 
 app.listen(3000, ()=>{

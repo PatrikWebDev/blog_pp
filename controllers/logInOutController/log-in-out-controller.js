@@ -1,11 +1,8 @@
-// Beégetett admin felhasználó
-let admin = {
-    username: "admin",
-    password: "password"
-}
-
 class LogInOutController{
-    constructor(){}
+     constructor(repository, JWT){
+        this.repository = repository,
+        this.jwt = JWT
+     }
 // =========================================
 // Bejelentkezési oldalt rendereli
      loginGet(req, res){
@@ -18,14 +15,15 @@ class LogInOutController{
     }
 // =========================================
 //Bejelentkezési adatokat ellenőrzi, bejelentkeztett
-    loginPost (req, res){
-        let {username, userpassword} = req.body
-        if(username = admin.username && userpassword == admin.password){
-            res.cookie('sessionId', 'admin')
-            res.redirect('/admin')
-        }else{
-            res.redirect('/login?fail=true')
-        }
+ async loginPost (req, res){
+     try{
+        const {username, userpassword} = req.body
+        const results = await this.repository.checking(username, userpassword)
+        res.cookie("sessionId",this.jwt.sign(...results))
+        res.redirect('/admin')
+    }catch(error){
+        res.redirect('/login?fail=true')
+     };
     }
 // =========================================
 //Kijelentkeztett

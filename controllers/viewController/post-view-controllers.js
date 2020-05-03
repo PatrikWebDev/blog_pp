@@ -1,3 +1,5 @@
+const database = require('../databaseController/database-controller.js').dbPath
+
 class PostViewController {
     constructor(blogPostService){
         this.blogPostService = blogPostService
@@ -47,7 +49,7 @@ async    postsListView(req, res) {
 
     // admin oldal nézette
     adminSite(req, res) {
-        res.render('admin_site',/* {database: databases, currentDB: db.filename}*/)
+        res.render('admin_site', {database: database})
     }
     // =========================================
 

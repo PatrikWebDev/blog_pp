@@ -30,4 +30,5 @@ class DatabaseController {
 module.exports = {
     getDB,
     DatabaseController,
+    dbPath
 }
