@@ -1,3 +1,5 @@
+const css = require ('../theme.json').path
+
 let blogTitles = [
     "Random Blog"
 ]
@@ -94,6 +96,23 @@ async postListView() {
                 return 'Missing from database'
             }
         }
+        // let tags = []
+
+        //     results.forEach(
+        //         element =>{
+        //             (element.tags.split(',')).forEach(
+        //                 mostInnerArr=>{
+        //                     console.log(mostInnerArr, !(tags.includes(mostInnerArr)))
+        //                     if (!(tags.includes(mostInnerArr))) {
+        //                        tags.push(mostInnerArr)
+        //                     }
+        //                 }
+        //             )
+        //         }
+        //     )
+
+        //     controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags, css: `/themes/${css}.css`})
+               
     }
 
 async adminPostList() {
@@ -118,6 +137,7 @@ async adminPostList() {
                 return "Missing from database"
             }
         }
+        // controllerCallback.render('admin_post_list', { posts: results, css: `/themes/${css}.css`})
 
     }
 async specificPost(searchCategory, searchKeyword){

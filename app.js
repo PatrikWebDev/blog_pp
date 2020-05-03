@@ -12,6 +12,8 @@ const session = require ('./controllers/sessionController/session-controller.js'
 const newPost= require('./controllers/postController/new-post-controller.js').NewPostController
 const search= require ('./controllers/searchController/search-controller.js').SearchEngine
 const databaseControll = require ('./controllers/databaseController/database-controller').DatabaseController
+const appearanceController = require ('./controllers/viewController/appearance-controller').AppearanceController
+const userController = require ('./controllers/userController/user-controller').UserController
 // ==================================================
 
 const blogService = require('./services/blog-post-service.js').BlogPostService
@@ -75,6 +77,14 @@ app.post('/searching', sessionController.cookieChecker.bind(sessionController), 
 
 // datbase Endpointhoz kapcsolódó endpointok
 app.post('/databaseChange', sessionController.cookieChecker.bind(sessionController), new databaseControll().changing)
+//=======================================
+
+// theme Endpointhoz kapcsolódó endpointok
+app.post('/themeChanger', new sessionController().cookieChecker, new appearanceController().themeChanger)
+//=======================================
+
+// newUser Endpointhoz kapcsolódó endpointok
+app.post('/newUser', new sessionController().cookieChecker, new userController().newUser)
 //=======================================
 
 app.listen(3000, ()=>{

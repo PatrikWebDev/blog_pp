@@ -37,6 +37,7 @@ class NewPostController {
             content: req.body.content,
             author: username,
             created_at: +(new Date()),
+            tags: req.body.tags.split(',')
         }
 
         this.repository.insertingPublishedPosts(blogPost)
@@ -55,6 +56,7 @@ class NewPostController {
             content: req.body.content,
             author: username,
             created_at:  +(new Date()),
+            tags: req.body.tags
         }
 
         this.repository.inserintDraftedPosts(blogPost)

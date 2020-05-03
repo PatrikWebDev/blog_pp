@@ -1,4 +1,5 @@
 const database = require('../databaseController/database-controller.js').dbPath
+const css = require ('../../theme.json').path
 
 class PostViewController {
     constructor(blogPostService){
@@ -37,19 +38,19 @@ async    postsListView(req, res) {
     singleViewRedirect(req, res) {
         let { title } = req.body
         let slug = title.replace(/\s/g, "-")
-        res.redirect(`/postView/${slug}`)
+        res.redirect(`/postView/${slug}`, {css: `/themes/${css}.css`})
     }
     // =========================================
 
     // új post készítése
     newPostView(req, res) {
-        res.render('new_post_view')
+        res.render('new_post_view',  {css: `/themes/${css}.css`})
     }
     // =========================================
 
     // admin oldal nézette
     adminSite(req, res) {
-        res.render('admin_site', {database: database})
+        res.render('admin_site', {database: database, css: `/themes/${css}.css`})
     }
     // =========================================
 
@@ -61,7 +62,7 @@ async    postsSingleView(req, res) {
         const searchedSlug = supportSlug.filter(element => element.title.replace(/\s/g, "-") == req.params.title)
         const searchedResult = await this.blogPostService.specificPost('title',searchedSlug[0].title)
         PostViewController.dateChanger(await searchedResult)
-        res.render('singleView', { post: searchedResult })
+        res.render('singleView', { post: searchedResult, css: `/themes/${css}.css`})
     }catch(error){
         res.send("Missing from database")
     }
@@ -77,7 +78,7 @@ async adminPostList(req, res) {
 
     // egy publikált postot az admin szerkeszteni tud
     adminEdit(req, res) {
-        res.render('new_post_view', { posts: req.body })
+        res.render('new_post_view', { posts: req.body, css: `/themes/${css}.css`})
     }
     // =========================================
 }

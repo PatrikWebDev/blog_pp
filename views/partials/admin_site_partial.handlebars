@@ -18,6 +18,25 @@
 <button type="submit" class="alert alert-primary">Change Database</button>
 </form>
     </div>
-    <div class="col-3"></div>
+    <div class="col-3">
+          <form method="POST" action="/themeChanger">
+        <select id="themeSelect" name="theme">
+            <option value="dark">Dark</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+        </select>
+        <button id="themeButton"  class="alert alert-primary" >Change Theme</button>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <form method="POST" action="/newUser">
+            <input type="text" name="username" placeholder="new user">
+            <input type="password" name="password" placeholder="password">
+            <button type="submit" class="alert alert-primary">Create new user</button>
+            </form>
+        </div>
+    </div>
 
 </div>

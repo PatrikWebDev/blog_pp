@@ -8,8 +8,8 @@ class LogInOutController{
      loginGet(req, res){
          if(req.query.fail=== 'true'){
             const failmessage = "Hibás felhasználónév vagy jelszó"
-            res.render('login',{fail: failmessage})
-        }else{
+            res.render('login', { fail: failmessage })
+        } else {
             res.render('login')
         }
     }
@@ -25,17 +25,17 @@ class LogInOutController{
         res.redirect('/login?fail=true')
      };
     }
-// =========================================
-//Kijelentkeztett
-    logoutGet(req, res){
+    // =========================================
+    //Kijelentkeztett
+    logoutGet(res) {
         res.render('login')
     }
-// =========================================
-//Kijelentkezési adatokat fogadja
-    logoutPost(req, res){
+    // =========================================
+    //Kijelentkezési adatokat fogadja
+    logoutPost(res) {
         res.redirect('/logOut')
     }
-// =========================================
+    // =========================================
 }
 
 module.exports = {
