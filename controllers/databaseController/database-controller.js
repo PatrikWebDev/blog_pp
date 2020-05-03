@@ -17,9 +17,6 @@ class DatabaseController {
             dbpath: choosenDB
         }
         fs.writeFileSync('config.json',JSON.stringify(dbpath))
-        fs.readFileSync('config.json', (err, data)=>{
-            console.log(data)
-        })
         res.redirect('/admin')
     }
 }
@@ -29,5 +26,4 @@ class DatabaseController {
 module.exports = {
     getDB,
     DatabaseController,
-    dbPath
 }

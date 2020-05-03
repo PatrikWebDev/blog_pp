@@ -29,7 +29,7 @@ async search(keyWord) {
 
             results.forEach(element => {
                 //UpperCase alakítsuk így mindegy hogy hogy írják be a szót és keressük titleben és contentben is
-                if (((element.content).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.title).toUpperCase()).includes(keyWord.toUpperCase())) {
+                if (((element.content).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.title).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.tags).toUpperCase()).includes(keyWord.toUpperCase())) {
                     foundPosts.push(element)
                 }
                 return

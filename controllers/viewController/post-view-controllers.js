@@ -1,4 +1,4 @@
-const database = require('../databaseController/database-controller.js').dbPath
+const database = require('../databaseController/database-controller.js').getDB
 const css = require ('../../theme.json').path
 
 class PostViewController {
@@ -25,13 +25,17 @@ class PostViewController {
 
 // a fő oldalon listázza a blog bejegyzéseket az oldalon egy archívummal
 async    postsListView(req, res) {
-            const results = await this.blogPostService.postListView()
-            res.render('home', {
-                blogs: results.results,
-                blogTitle: results.blogTitles,
-                historyObject: results.historyObject,
-                tags: results.tags
-            })
+    try {
+        const results = await this.blogPostService.postListView()
+        res.render('home', {
+            blogs: results.results,
+            blogTitle: results.blogTitles,
+            historyObject: results.historyObject,
+            // tags: results.tags
+        })
+    } catch (error) {
+        console.log(error)
+    }
     }
     // =========================================
 
@@ -51,7 +55,8 @@ async    postsListView(req, res) {
 
     // admin oldal nézette
     adminSite(req, res) {
-        res.render('admin_site', {database: database, css: `/themes/${css}.css`})
+        const currenDB = database()
+        res.render('admin_site', {database: currenDB.filename, css: `/themes/${css}.css`})
     }
     // =========================================
 

@@ -1,7 +1,10 @@
 const sqlite3 = require('sqlite3')
-const config = require('../config.json')
-const path = config.dbpath
-const db = new sqlite3.Database(path)
+// const config = require('../config.json')
+function path(){
+    const config = require('../config.json')
+    return config.dbpath
+}
+const db = new sqlite3.Database(path())
 
 class BlogPostRepository {
     findAll() {

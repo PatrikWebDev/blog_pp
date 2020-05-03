@@ -27,7 +27,7 @@ class UserController{
             
          this.userRepository.newUser(userData)
     
-            res.redirect('/admin')   
+        res.redirect('/admin')   
         } catch (error) {
             res.send(error)
         }
