@@ -1,13 +1,11 @@
-const sqlite3 = require('sqlite3')
-// const config = require('../config.json')
-function path(){
-    const config = require('../config.json')
-    return config.dbpath
-}
-const db = new sqlite3.Database(path())
-
 class BlogPostRepository {
     findAll() {
+        const sqlite3 = require('sqlite3')
+         function path(){
+            const config = require('../config.json').dbpath
+            return config
+        }
+        const db = new sqlite3.Database(path())
         return new Promise((resolve, reject)=>{
             db.serialize(function(){
                 db.all("SELECT id, title, content, author, date FROM posts",(err, result)=>{
