@@ -52,6 +52,10 @@ app.post('/newPost',new sessionController().cookieChecker, new newPostController
 app.get('/newPostView',new sessionController().cookieChecker, new postViewController().newPostView)
 // =========================================
 
+// archivumAppearanceChange Endpointhoz kapcsolódó endpointok
+app.post('/archivumAppearanceChange',new sessionController().cookieChecker, new newPostController().publishNewPost)
+// =========================================
+
 // editPost Endpointhoz kapcsolódó endpointok
 app.post('/editPost', new sessionController().cookieChecker, new postViewController().adminEdit)
 // =========================================

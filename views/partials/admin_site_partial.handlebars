@@ -25,7 +25,7 @@
             <option value="green">Green</option>
             <option value="blue">Blue</option>
         </select>
-        <button id="themeButton"  class="alert alert-primary" >Change Theme</button>
+       <button id="themeButton"  class="alert alert-primary">Change Theme</button>
         </form>
     </div>
 
@@ -34,6 +34,16 @@
             <form method="POST" action="/newUser">
             <input type="text" name="username" placeholder="new user">
             <input type="password" name="password" placeholder="password">
+            <button type="submit" class="alert alert-primary">Create new user</button>
+            </form>
+        </div>
+        <div class="col-3">
+            <form method="POST" action="/archivumAppearanceChange">
+            <label>Archívum Megjelenés</label>
+            <select name="structure">
+                <option value="flat">Lapos</option>
+                <option value="tree">Fa alakú</option>
+            </select>
             <button type="submit" class="alert alert-primary">Create new user</button>
             </form>
         </div>

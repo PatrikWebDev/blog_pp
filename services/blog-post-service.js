@@ -87,7 +87,6 @@ class BlogPostService {
                 element =>{
                     (element.tags.split(',')).forEach(
                         mostInnerArr=>{
-                            console.log(mostInnerArr, !(tags.includes(mostInnerArr)))
                             if (!(tags.includes(mostInnerArr))) {
                                tags.push(mostInnerArr)
                             }
@@ -95,8 +94,10 @@ class BlogPostService {
                     )
                 }
             )
+            
+            const lastRefresh = results[results.length-1].date
                 
-            controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags, css: `/themes/${css}.css`})
+            controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags, css: `/themes/${css}.css`, lastRefresh})
         })
 
     }

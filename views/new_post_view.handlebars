@@ -10,6 +10,8 @@
 <label>Tags</label>
 <input class="form-control" type="text" name="tags" id="tags" required="true" onblur="document.draft.input.value = this.value;" value="{{posts.tags}}">
 <div class="form-group">
+<label>SLUG</label>
+<input class="form-control" id="slug" type="text" required="true" name="slug" value="" onblur="document.draft.input.value = this.value;" value="{{posts.slug}}">
 <label>Content</label>
 <input id="blogcontent" type="hidden" name="content" value="">
 <div id="editor" class="ql-editor  form-control">
@@ -65,5 +67,14 @@
                 var submitcontent = document.querySelector('input[name=content]');
                 submitcontent.value = quill.root.innerHTML;
         };
+
+      document.getElementById("title").addEventListener("keypress", ()=>{
+        slugGenerator()
+      })
+
+      function slugGenerator(){
+      const slug = document.getElementById("title").value
+      document.getElementById("slug").placeholder = slug.replace(/\s/g, "-")
+      }
 
 </script>

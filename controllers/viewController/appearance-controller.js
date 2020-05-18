@@ -6,18 +6,20 @@ function getTheme() {
 }
 
 class AppearanceController {
-
-   async themeChanger(req, res){
+    themeChanger(req, res){
         let {theme} = req.body
         let path = {
             path: theme
         }
-       await fs.writeFileSync('theme.json',JSON.stringify(path))
-        fs.readFileSync('theme.json', (err, data)=>{
-            console.log(data)
-        })
-        res.redirect('/')
+        console.log("itt")
+        new Promise((resolve,reject)=>{
+          let a =  fs.writeFileSync('theme.json', JSON.stringify(path))
+            fs.readFileSync('theme.json', (err, data)=>console.log("itt"))
 
+            resolve(a)
+        }).then(
+            res.redirect('/admin')
+        ) 
     }
 }
 

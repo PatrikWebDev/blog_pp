@@ -45,7 +45,7 @@
     <form id="myForm" method="POST" action="/postView">
     {{#each blogs}}
     <tr>
-        <td class="text-center"> <a id="cba{{this.title}}" href="#abc{{this.title}}"  onclick="document.getElementById(`abc{{this.title}}`).click();" >{{this.title}}</a></td>
+        <td class="text-center"> <a id="cba{{this.title}}" href="#abc{{this.slug}}"  onclick="document.getElementById(`abc{{this.slug}}`).click();" >{{this.title}}</a></td>
             <td class="text-center"> {{this.author}}</td>
             <td class="text-center"> {{this.date}}</td>
             <td class="text-center" style="display: none;">
@@ -61,3 +61,4 @@
     </div>
 </div>
 </div>
+<p>Utolsó frissítés időpontja: {{lastRefresh}}</p>

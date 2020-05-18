@@ -12,13 +12,13 @@ class BlogPostRepository {
 
     insertingPublishedPosts(blogPost){
         db.serialize(function () {
-            db.run(`INSERT INTO posts ( id, title, content, author, date, tags) VALUES ("${blogPost.id}", "${blogPost.title}", "${blogPost.content}", "${blogPost.author}", "${blogPost.created_at}", "${blogPost.tags}")`)
+            db.run(`INSERT INTO posts ( id, title, slug ,content, author, date, tags) VALUES ("${blogPost.id}", "${blogPost.title}", "${blogPost.slug}", "${blogPost.content}", "${blogPost.author}", "${blogPost.created_at}", "${blogPost.tags}")`)
         })
     }
 
     inserintDraftedPosts(blogPost){
         db.serialize(function () {
-            db.run(`INSERT INTO drafts ( id, title, content, author, date, tags) VALUES ("${blogPost.id}", "${blogPost.title}", "${blogPost.content}", "${blogPost.author}", "${blogPost.created_at}", "${blogPost.tags}")`)
+            db.run(`INSERT INTO drafts ( id, title, slug ,content, author, date, tags) VALUES ("${blogPost.id}", "${blogPost.title}", "${blogPost.slug}", "${blogPost.content}", "${blogPost.author}", "${blogPost.created_at}", "${blogPost.tags}")`)
         })
     }
 
