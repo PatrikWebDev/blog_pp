@@ -1,11 +1,10 @@
-const blogPostService = require('../../services/blog-post-service.js')
-const sqlite3 = require('sqlite3')
-const config = require('../../config.json')
-const db = new sqlite3.Database(config.dbpath)
-const css = require('../../theme.json').path
-// =========================================
+const database = require('../databaseController/database-controller.js').getDB
+const css = require ('../../theme.json').path
 
 class PostViewController {
+    constructor(blogPostService){
+        this.blogPostService = blogPostService
+    }
 
     // többször használt backward compatibility-t megoldó dátum átalakítás
     static dateChanger(dbValues) {
@@ -24,10 +23,19 @@ class PostViewController {
     }
     // =========================================
 
-    // a fő oldalon listázza a blog bejegyzéseket az oldalon egy archívummal
-    postsListView(req, res) {
-        new blogPostService.BlogPostService().postListView(res)
-
+// a fő oldalon listázza a blog bejegyzéseket az oldalon egy archívummal
+async    postsListView(req, res) {
+    try {
+        const results = await this.blogPostService.postListView()
+        res.render('home', {
+            blogs: results.results,
+            blogTitle: results.blogTitles,
+            historyObject: results.historyObject,
+            tags: results.tags
+        })
+    } catch (error) {
+        console.log(error)
+    }
     }
     // =========================================
 
@@ -47,31 +55,30 @@ class PostViewController {
 
     // admin oldal nézette
     adminSite(req, res) {
-        res.render('admin_site', { css: `/themes/${css}.css` })
+        const currenDB = database()
+        res.render('admin_site', {database: currenDB.filename, css: `/themes/${css}.css`})
     }
     // =========================================
 
     // fő oldalról megnyitott egy blog bejegyzés nézette
-    postsSingleView(req, res) {
-        db.serialize(function () {
-            db.all(`SELECT title from SLUG WHERE slug = ${req.params.title}`, function (err, results) {
-                db.all(`SELECT title, content, author, date FROM posts WHERE title= "${results.title[0]}"`, function (err, results) {
-                    if (err != null) {
-                        res.send("Missing from database")
-                    }
-
-                    PostViewController.dateChanger(results)
-
-                    res.render('singleView', { post: results, css: `/themes/${css}.css` })
-                })
-            })
-        })
+async    postsSingleView(req, res) {
+    try{
+        const results = await this.blogPostService.postListView()
+        const supportSlug = results.results
+        const searchedSlug = supportSlug.filter(element => element.title.replace(/\s/g, "-") == req.params.title)
+        const searchedResult = await this.blogPostService.specificPost('title',searchedSlug[0].title)
+        PostViewController.dateChanger(await searchedResult)
+        res.render('singleView', { post: searchedResult, css: `/themes/${css}.css`})
+    }catch(error){
+        res.send("Missing from database")
     }
+}
     // =========================================
 
     // admin nézetttes listázása a postoknak
-    adminPostList(req, res) {
-        new blogPostService.BlogPostService().adminPostList(res)
+async adminPostList(req, res) {
+        const results = await this.blogPostService.adminPostList()
+        res.render('admin_post_list', { posts: results })
     }
     // =========================================
 

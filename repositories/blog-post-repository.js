@@ -1,14 +1,38 @@
-const sqlite3 = require('sqlite3')
-const config = require('../config.json')
-const path = config.dbpath
-const db = new sqlite3.Database(path)
-
 class BlogPostRepository {
-    findAll(serviceCallback) {
-        db.serialize(function(){
-            db.all("SELECT id, title, content, author, date, tags FROM posts", serviceCallback)
+    findAll() {
+        const sqlite3 = require('sqlite3')
+         function path(){
+            const config = require('../config.json').dbpath
+            return config
+        }
+        const db = new sqlite3.Database(path())
+        return new Promise((resolve, reject)=>{
+            db.serialize(function(){
+                db.all("SELECT id, title, content, author, date FROM posts",(err, result)=>{
+                    if(err){
+                        reject(err);
+                        return
+                    }
+                    resolve(result)
+                })
+            })
         })
     }
+
+    selectSpecific(searchCategory, searchWord){
+        return new Promise((resolve,reject)=>{
+            db.serialize(function(){
+                db.all(`SELECT title, content, author, date FROM posts WHERE ${searchCategory}= "${searchWord}"`, (err, result)=>{
+                    if(err){
+                        reject(err);
+                        return
+                    }
+                    resolve(result) 
+                })
+            })
+        })
+    }
+
 
     insertingPublishedPosts(blogPost){
         db.serialize(function () {

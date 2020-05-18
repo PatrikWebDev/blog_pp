@@ -1,135 +1,163 @@
-const repository = require('../repositories/blog-post-repository').BlogPostRepository
 const css = require ('../theme.json').path
+
 let blogTitles = [
-    "Elso blog oldalam"
+    "Random Blog"
 ]
+
 class BlogPostService {
-    search(controllerCallback, keyWord) {
-        console.log(keyWord)
-        let foundPosts = []
-        new repository().findAll(function (err, results) {
-            if (err != null) {
-                controllerCallback.send(err, [])
-                return
-            }
-             
-            results.forEach(element => {
-                if (+(element.date)) {
-                    return element.date = new Date(+(element.date))
-                }
-                return element.date
-            })
-    
-            results.forEach(element => {
-                if (element.date == "Invalid Date") {
-                    return element.date = "Before Date was found"
-                }
-            })
-            results.forEach(element=>{
-                //UpperCase alakítsuk így mindegy hogy hogy írják be a szót és keressük titleben és contentben is
-             if(((element.content).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.title).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.tags).toUpperCase()).includes(keyWord.toUpperCase())){
-                foundPosts.push(element)   
-            }
-            return
-            })
-
-            controllerCallback.render('results', {foundPosts, css: `/themes/${css}.css`})
-
-        })
+    constructor(postRepository) {
+        this.postRepository = postRepository;
     }
 
-    postListView(controllerCallback){
-       new repository().findAll(function (err, results) {
-            if (err != null) {
-                controllerCallback.send('Missing from database')
-            }
+async search(keyWord) {
+        const foundPosts = []
+        try {
+            const results = await this.postRepository.findall()
+
             results.forEach(element => {
                 if (+(element.date)) {
                     return element.date = new Date(+(element.date))
                 }
                 return element.date
             })
-    
+
             results.forEach(element => {
                 if (element.date == "Invalid Date") {
                     return element.date = "Before Date was found"
                 }
             })
-            
-            let smth = {}
+
+            results.forEach(element => {
+                //UpperCase alakítsuk így mindegy hogy hogy írják be a szót és keressük titleben és contentben is
+                if (((element.content).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.title).toUpperCase()).includes(keyWord.toUpperCase()) || ((element.tags).toUpperCase()).includes(keyWord.toUpperCase())) {
+                    foundPosts.push(element)
+                }
+                return
+            })
+
+            return foundPosts
+
+        } catch (error) {
+            if (error != null) {
+                return (err, [])
+            }
+        }
+
+    }
+
+async postListView() {
+        try {
+            const results = await this.postRepository.findAll()
+            results.forEach(element => {
+                if (+(element.date)) {
+                    return element.date = new Date(+(element.date))
+                }
+                return element.date
+            })
+
+            results.forEach(element => {
+                if (element.date == "Invalid Date") {
+                    return element.date = "Before Date was found"
+                }
+            })
+
+            let historyObject = {}
 
             results.forEach(
                 element => {
-                    const a = new Date(+(element.date))
-                    if (a == "Invalid Date") {
+                    const date = new Date(+(element.date))
+                    if (date == "Invalid Date") {
                         return
                     } else {
-                        const year = a.getFullYear()
-                        const month = (a.getMonth()) + 1
+                        const year = date.getFullYear()
+                        const month = (date.getMonth()) + 1
 
-                        if (!(year in smth)) {
-                            smth[year] = {}
+                        if (!(year in historyObject)) {
+                            historyObject[year] = {}
                         }
 
-                        if (!(month in smth[year])) {
-                            smth[year][month] = []
+                        if (!(month in historyObject[year])) {
+                            historyObject[year][month] = []
                         }
 
-                        smth[year][month].push(element.title)
+                        historyObject[year][month].push(element.title)
 
                     }
                 }
             )
 
-            let tags = []
+            const tags = []
 
-            results.forEach(
-                element =>{
-                    (element.tags.split(',')).forEach(
-                        mostInnerArr=>{
-                            if (!(tags.includes(mostInnerArr))) {
-                               tags.push(mostInnerArr)
+                results.forEach(
+                    element =>{
+                        (element.tags.split(',')).forEach(
+                            mostInnerArr=>{
+                                console.log(mostInnerArr, !(tags.includes(mostInnerArr)))
+                                if (!(tags.includes(mostInnerArr))) {
+                                   tags.push(mostInnerArr)
+                                }
                             }
-                        }
-                    )
-                }
-            )
-            
-            const lastRefresh = results[results.length-1].date
-                
-            controllerCallback.render('home', { blogs: results, blogTitle: blogTitles, smth, tags, css: `/themes/${css}.css`, lastRefresh})
-        })
+                        )
+                    }
+               )
 
+            const lastRefresh = results[results.length-1].date
+
+            const returnObject = {
+                results: results,
+                title: blogTitles,
+                historyObject: historyObject,
+                lastRefresh: lastRefresh,
+                tags: tags
+            }
+            return returnObject
+
+        }catch(error){
+            if (error != null) {
+                return 'Missing from database'
+            }
+        }             
     }
 
-    adminPostList(controllerCallback){
-        new repository().findAll(function (err, results) {
-            if (err != null) {
-                controllerCallback.send("Missing from database")
-            }
-            
+async adminPostList() {
+    try {
+        const results = await this.postRepository.findAll()
             results.forEach(element => {
                 if (+(element.date)) {
                     return element.date = new Date(+(element.date))
                 }
                 return element.date
             })
-    
+
             results.forEach(element => {
                 if (element.date == "Invalid Date") {
                     return element.date = "Before Date was found"
                 }
             })
 
-            controllerCallback.render('admin_post_list', { posts: results, css: `/themes/${css}.css`})
+            return results
+        }catch(error){
+            if (error != null) {
+                return "Missing from database"
+            }
         }
-        )
-    }
+        // controllerCallback.render('admin_post_list', { posts: results, css: `/themes/${css}.css`})
 
+    }
+async specificPost(searchCategory, searchKeyword){
+    try {
+        const results = await this.postRepository.selectSpecific(searchCategory, searchKeyword)
+        return results
+    } catch (error) {
+        if (error != null) {
+            return "Missing from database"
+        }
+    }
+}
 
 
 }
 
-module.exports={
+module.exports = {
     BlogPostService
 }

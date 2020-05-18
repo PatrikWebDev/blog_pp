@@ -1,37 +1,36 @@
-// Működés szükséges dolgok
-const uuid = require('uuid')
-const uuidv4 = uuid.v4
-const repository = require('../../repositories/users-repository').UserRepository
-
 class UserController{
-    newUser(req, res){
+    constructor(userRepository){
+        this.userRepository = userRepository
+    }
+ newUser(req, res){
         // const failmessage = "Mindkét mező kitöltése kötelező"
         if (req.body.username == false && req.body.password == false) {
             res.send("Hiba")
-            // res.render('new_post_view', { fail: failmessage })
         }
-
-        let userData = {
-            id: `${uuidv4()}`,
-            name: req.body.username,
-            password: req.body.password,
-        }
-        new repository().insertingNewUser(userData)
-
-        res.redirect('/admin')
-    }
-
-    findAll(controllerCallback){
-        new repository().findAll(function (err, results) {
-            if (err != null) {
-                // controllerCallback.send(err, [])
-                return
+        try {
+            let userData = {
+                name: req.body.username,
+                password: req.body.password,
+                email: req.body.email
+            }
+    
+            if(req.body.auth == "user"){
+                userData.admin = 'false'
+                userData.superAdmin = 'false'
+            }else if(req.body.auth == "admin"){
+                userData.admin = 'true'
+                userData.superAdmin = 'false'
             }else{
-                
-                controllerCallback(results)
+                userData.admin = 'true'
+                userData.superAdmin = 'true'
             }
             
-        })
+         this.userRepository.newUser(userData)
+    
+        res.redirect('/admin')   
+        } catch (error) {
+            res.send(error)
+        }
     }
 }
 

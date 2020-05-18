@@ -1,16 +1,13 @@
-const blogPostService = require('../../services/blog-post-service.js').BlogPostService
 class SearchEngine {
 // =========================================
-
+    constructor(blogPostService){
+        this.BlogPostService = blogPostService
+    }
 // Megadott kereső szó alapján keress
     search(req, res){
-        let {keyWord} = req.body
-        let {keyTag} = req.body
-        if(!(keyWord)){
-            new blogPostService().search(res,keyTag)   
-        }else{
-            new blogPostService().search(res,keyWord)
-        }
+        const {keyWord} = req.body
+        const results = this.BlogPostService.search(keyWord)
+        res.render('results', {results})
 }
 // =========================================
 

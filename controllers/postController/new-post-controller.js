@@ -1,10 +1,13 @@
 // Működés szükséges dolgok
 const uuid = require('uuid')
 const uuidv4 = uuid.v4
-const repository = require('../../repositories/blog-post-repository.js').BlogPostRepository
 // =========================================
 
 class NewPostController {
+    constructor(repository, JWT){
+        this.repository = repository,
+        this.jwt = JWT
+    }
 // egy function ami létrehozza a dátumot több helyen használható
     static creatingDate() {
 
@@ -26,21 +29,18 @@ class NewPostController {
         if (req.body.title == false && req.body.content == false) {
             res.render('new_post_view', { fail: failmessage })
         }
-
-        let { sessionId } = req.cookies
-        console.log(req.body.tags.split(','))
+        const { sessionId } = req.cookies
+        const {payload:{username}} = this.jwt.decode(sessionId)
         let blogPost = {
             id: `${uuidv4()}`,
             title: req.body.title,
             content: req.body.content,
-            author: sessionId,
+            author: username,
             created_at: +(new Date()),
             tags: req.body.tags.split(',')
         }
-        if(req.body.slug != null) blogPost.slug = req.body.slug
-        else blogPost.slug = req.body.title.replace(/\s/g, "-") 
 
-        new repository().insertingPublishedPosts(blogPost)
+        this.repository.insertingPublishedPosts(blogPost)
 
         res.redirect('/admin')
     }
@@ -48,19 +48,18 @@ class NewPostController {
 
 // a blog bejegyzés piszkozatként való elmentése
     saveDraft(req, res) {
+        const { sessionId } = req.cookies
+        const {payload:{username}} = this.jwt.decode(sessionId)
         let blogPost = {
             id: `${uuidv4()}`,
             title: req.body.title,
             content: req.body.content,
-            author: sessionId,
+            author: username,
             created_at:  +(new Date()),
             tags: req.body.tags
         }
 
-    if(req.body.slug != null) blogPost.slug = req.body.slug
-    else blogPost.slug = req.body.title.replace(/\s/g, "-") 
-
-        new repository().inserintDraftedPosts(blogPost)
+        this.repository.inserintDraftedPosts(blogPost)
         res.redirect('/admin')
     }
 // =========================================
