@@ -65,7 +65,7 @@ app.get('/newPostView', sessionController.cookieChecker.bind(sessionController),
 // =========================================
 
 // archivumAppearanceChange Endpointhoz kapcsolódó endpointok
-app.post('/archivumAppearanceChange',new sessionController().cookieChecker, new newPostController().publishNewPost)
+//app.post('/archivumAppearanceChange',new sessionController().cookieChecker, new newPostController().publishNewPost)
 // =========================================
 
 // editPost Endpointhoz kapcsolódó endpointok
